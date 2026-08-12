@@ -172,23 +172,73 @@ def check_rules(
 
 
 def check_urls(sources: dict, report: Report) -> None:
-    """Verifica opzionale di raggiungibilita', richiede rete."""
+    """Verifica opzionale di raggiungibilita'. Richiede rete.
+
+    Molti portali istituzionali sono protetti da un WAF che rifiuta le richieste HEAD
+    e gli User-Agent di libreria, rispondendo 403 anche quando la pagina e' pubblica e
+    perfettamente raggiungibile da un browser. Trattare quel 403 come errore
+    produrrebbe un falso negativo sistematico sulle fonti piu' importanti del registro.
+
+    Di conseguenza:
+      - la richiesta usa GET con Range minimo e uno User-Agent realistico
+      - solo 404 e 410 sono errori: indicano una fonte effettivamente sparita
+      - 401, 403, 405, 406, 429 e i 5xx sono avvisi: indicano un accesso automatico
+        negato o un disservizio temporaneo, non un collegamento morto
+      - una fonte puo' dichiarare `url_check: skip` con motivazione, per i portali che
+        bloccano stabilmente le verifiche automatiche
+    """
     import urllib.error
     import urllib.request
+
+    dead = {404, 410}
+    blocked = {401, 403, 405, 406, 429}
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.8",
+        "Accept-Language": "it-IT,it;q=0.9",
+        "Range": "bytes=0-0",
+    }
+
+    checked = skipped = 0
 
     for source_id, source in sources.items():
         url = source.get("url")
         if not url:
             continue
-        request = urllib.request.Request(url, method="HEAD")
+
+        if source.get("url_check") == "skip":
+            skipped += 1
+            reason = source.get("url_check_reason", "motivazione non indicata")
+            report.warn(f"fonte {source_id}: verifica url saltata ({reason})")
+            continue
+
+        checked += 1
+        request = urllib.request.Request(url, headers=headers, method="GET")
         try:
-            with urllib.request.urlopen(request, timeout=15) as response:
-                if response.status >= 400:
-                    report.error(f"fonte {source_id}: url risponde {response.status}")
+            with urllib.request.urlopen(request, timeout=20) as response:
+                status = response.status
+                if status in dead:
+                    report.error(f"fonte {source_id}: url risponde {status}, collegamento morto")
+                elif status >= 400:
+                    report.warn(f"fonte {source_id}: url risponde {status}")
         except urllib.error.HTTPError as exc:
-            report.error(f"fonte {source_id}: url risponde {exc.code}")
-        except Exception as exc:  # rete assente, timeout, TLS
-            report.warn(f"fonte {source_id}: url non raggiungibile ({exc})")
+            if exc.code in dead:
+                report.error(f"fonte {source_id}: url risponde {exc.code}, collegamento morto")
+            elif exc.code in blocked:
+                report.warn(
+                    f"fonte {source_id}: url risponde {exc.code}, accesso automatico "
+                    f"negato dal portale. Verificare a mano oppure impostare url_check: skip"
+                )
+            else:
+                report.warn(f"fonte {source_id}: url risponde {exc.code}")
+        except Exception as exc:
+            report.warn(f"fonte {source_id}: url non raggiungibile ({type(exc).__name__}: {exc})")
+
+    print(f"URL verificati: {checked}" + (f", saltati: {skipped}" if skipped else ""))
 
 
 def main() -> int:

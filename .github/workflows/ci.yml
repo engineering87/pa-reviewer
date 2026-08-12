@@ -25,7 +25,10 @@ jobs:
   urls:
     name: Raggiungibilita' delle fonti
     runs-on: ubuntu-latest
-    continue-on-error: true   # una fonte irraggiungibile e' un avviso, non un blocco
+    # Il controllo fallisce solo su 404 e 410, cioe' su fonti effettivamente sparite.
+    # I portali istituzionali rispondono spesso 403 alle verifiche automatiche: quello
+    # e' un avviso, non un collegamento morto.
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v5

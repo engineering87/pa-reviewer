@@ -94,6 +94,13 @@ Lo script [`scripts/check_sources.py`](./scripts/check_sources.py) fa fallire la
 4. una regola in un modulo `stable` poggia su una fonte `cited` o `unverified`
 5. una fonte ha `retrieved` più vecchio di 180 giorni, o un `review_by` superato
 
+Il controllo di raggiungibilita' degli URL (`--check-urls`) e' separato e piu'
+prudente: fallisce solo su `404` e `410`, cioe' su fonti effettivamente sparite. I
+portali istituzionali sono spesso protetti da un WAF che risponde `403` alle richieste
+automatiche pur servendo regolarmente la pagina a un browser: quello e' un avviso da
+verificare a mano, non un collegamento morto. Una fonte che blocchi stabilmente le
+verifiche puo' dichiarare `url_check: skip` con `url_check_reason`.
+
 I punti 4 e 5 sono la parte che conta: rendono la manutenzione della baseline un
 fallimento di build anziché un proposito.
 

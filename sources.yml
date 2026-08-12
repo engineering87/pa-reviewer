@@ -267,15 +267,22 @@ domains:
         document: "Linee guida per lo sviluppo del software sicuro nella pubblica amministrazione"
         issuer: AgID
         act: null
-        act_date: null
+        act_date: "2020-05-06"
         status: in_vigore
         url: "https://www.agid.gov.it/it/sicurezza/cert-pa/linee-guida-sviluppo-del-software-sicuro"
         verification: verified
         retrieved: "2026-08-12"
+        attachments:
+          - "Allegato 1 - Linee Guida per l'adozione di un ciclo di sviluppo di software sicuro"
+          - "Allegato 2 - Linee Guida per lo sviluppo sicuro di codice"
+          - "Allegato 3 - Linee Guida per la configurazione per adeguare la sicurezza del software di base"
+          - "Allegato 4 - Linee Guida per la modellazione delle minacce e individuazione delle azioni di mitigazione conformi ai principi del Secure/Privacy by Design"
         notes: >
           Si inseriscono nel contesto delle linee guida per la sicurezza ICT delle PA.
-          Comprendono l'allegato "Linee Guida per l'adozione di un ciclo di sviluppo di
-          software sicuro". Estremi della determinazione di adozione da reperire.
+          La pagina istituzionale riporta come ultimo aggiornamento il 06-05-2020 e
+          pubblica quattro allegati tecnici, elencati in attachments. L'allegato 2 e' il
+          piu' rilevante per il modulo sicurezza, perche' riguarda direttamente la
+          scrittura del codice. Estremi della determinazione di adozione da reperire.
 
       - id: SEC-MISURE-MINIME
         document: "Misure minime di sicurezza ICT per le pubbliche amministrazioni"
