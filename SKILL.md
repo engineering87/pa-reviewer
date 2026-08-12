@@ -95,7 +95,8 @@ Ogni finding porta obbligatoriamente:
   - `deterministic` — prodotto da uno strumento ufficiale, ne riporti l'output
   - `inferred` — dedotto dalla lettura del codice, con la citazione che lo sostiene
   - `not_verifiable` — adempimento che il codice non puo' dimostrare
-- `severity`: `important`, `nit`, `pre_existing`
+- `severity`: `important`, `nit`, `pre_existing`, resi nel report rispettivamente con i
+  marcatori `[!]`, `[·]`, `[~]`
 
 Regola di evidenza, non negoziabile: **un'affermazione sul comportamento del codice
 richiede una citazione `file:line`, mai un'inferenza dai nomi.** Se non riesci a
