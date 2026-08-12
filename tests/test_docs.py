@@ -126,11 +126,29 @@ def test_ogni_modulo_ha_condizioni_di_promozione_dichiarate(modules, root):
         assert "Condizioni per passare" in testo, modulo
 
 
-def test_gli_script_di_delega_sono_eseguibili(root):
+def test_gli_script_sono_eseguibili(root):
+    """Il bit di esecuzione deve essere registrato nell'indice di Git, non solo
+    presente sul filesystem di chi ha creato i file.
+
+    Alcuni strumenti di decompressione e i filesystem Windows non propagano il
+    permesso, e Git registra cio' che vede al momento dell'aggiunta: il risultato
+    e' uno script non eseguibile per tutti quelli che clonano il repository.
+    """
     import os
 
-    for script in (root / "scripts").glob("*.sh"):
-        assert os.access(script, os.X_OK), f"{script.name} non eseguibile"
+    non_eseguibili = [
+        script.name
+        for cartella in ("scripts",)
+        for script in sorted((root / cartella).glob("*.sh"))
+        + sorted((root / cartella).glob("*.py"))
+        if not os.access(script, os.X_OK)
+    ]
+    assert not non_eseguibili, (
+        f"script senza bit di esecuzione: {', '.join(non_eseguibili)}. "
+        f"Correggere nell'indice di Git, non sul filesystem:\n"
+        f"  git update-index --chmod=+x scripts/*.sh scripts/*.py\n"
+        f"Verificare con `git ls-files -s scripts/`: i modi devono essere 100755."
+    )
 
 
 def test_gli_script_di_delega_dichiarano_la_fonte_dello_strumento(root):

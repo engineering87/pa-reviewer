@@ -1,0 +1,144 @@
+module: sicurezza
+maturity: beta
+
+# Gli strumenti generici di analisi statica coprono gran parte di questo dominio.
+# Il modulo si limita a cio' che le fonti nazionali trattano espressamente, e delega
+# il resto anziche' duplicarlo.
+
+rules:
+
+  - id: SEC-001
+    title: "credenziali in chiaro nel codice applicativo"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il codice o i file di configurazione versionati contengono password, chiavi,
+      token o stringhe di connessione complete di credenziali.
+    guard: >
+      Escludere percorsi di test, dati di esempio e documentazione. Escludere i valori
+      manifestamente segnaposto e le variabili risolte a esecuzione. Citare sempre
+      file e riga.
+    message: >
+      La credenziale e' presente nel repository: la sua rotazione richiede una modifica
+      del codice e la sua diffusione non e' piu' controllabile.
+
+  - id: SEC-002
+    title: "protocollo di trasporto configurato su versioni superate"
+    source: SEC-TLS
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      La configurazione abilita versioni del protocollo di trasporto anteriori a quelle
+      raccomandate, oppure suite crittografiche deprecate.
+    guard: >
+      Verificare se la configurazione riguarda un ambiente di prova o un servizio
+      esposto. Un vincolo di compatibilita' documentato va segnalato ma non trattato
+      come difetto silenzioso.
+    message: >
+      Le raccomandazioni nazionali sul protocollo di trasporto indicano versioni e
+      suite ammesse: la configurazione se ne discosta.
+
+  - id: SEC-003
+    title: "verifica del certificato disattivata"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Un client di rete disattiva la validazione del certificato del server o accetta
+      qualunque catena di certificazione.
+    guard: >
+      Escludere i percorsi di test e gli ambienti locali riconoscibili. Quando la
+      disattivazione e' condizionata da una variabile d'ambiente, verificare il valore
+      predefinito prima di emettere.
+    message: >
+      La validazione del certificato e' disattivata: la connessione e' esposta a
+      interposizione.
+
+  - id: SEC-004
+    title: "algoritmi crittografici deprecati"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il codice usa funzioni di sintesi o cifrari superati per proteggere credenziali o
+      dati, oppure generatori pseudocasuali non crittografici in contesti di sicurezza.
+    guard: >
+      L'uso di una funzione di sintesi superata per il calcolo di somme di controllo
+      non crittografiche, per esempio la deduplicazione, non e' un rilievo: verificare
+      lo scopo prima di segnalare.
+    message: >
+      L'algoritmo impiegato non e' adeguato allo scopo di sicurezza per cui viene usato.
+
+  - id: SEC-005
+    title: "interrogazioni costruite per concatenazione"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Una interrogazione verso una base dati viene composta concatenando valori
+      provenienti dalla richiesta anziche' tramite parametri.
+    guard: >
+      Verificare l'origine del valore concatenato: una costante interna non e' un
+      rilievo. Considerare gli strumenti di mappatura che parametrizzano
+      automaticamente.
+    message: >
+      Il valore proveniente dall'esterno entra nell'interrogazione senza
+      parametrizzazione.
+
+  - id: SEC-006
+    title: "dati personali o credenziali registrati nei log"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Un'istruzione di registrazione emette codici fiscali, credenziali, token di
+      sessione o corpi di richiesta non filtrati.
+    guard: >
+      Distinguere il dato personale dall'identificativo tecnico. Verificare la presenza
+      di filtri o maschere configurati a livello di registratore prima di emettere.
+      Citare la riga che registra, non la definizione del campo.
+    message: >
+      Il dato emesso nel log e' personale o riservato e sopravvive alla sessione nei
+      sistemi di raccolta.
+
+  - id: SEC-007
+    title: "attributi di sicurezza dei cookie non impostati"
+    source: SEC-LG-SVILUPPO
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Un cookie di sessione o di autenticazione viene creato senza gli attributi che ne
+      limitano l'accesso da script, la trasmissione in chiaro e l'invio verso terzi.
+    guard: >
+      Verificare la configurazione globale del quadro applicativo prima della singola
+      creazione: gli attributi sono spesso impostati centralmente. I cookie funzionali
+      non di sessione hanno esigenze diverse.
+    message: >
+      Il cookie non limita accesso da script, trasmissione in chiaro o invio verso
+      terzi.
+
+  - id: SEC-008
+    title: "dipendenze con vulnerabilita' note non aggiornate"
+    source: SEC-MISURE-MINIME
+    check: structural
+    severity: nit
+    evidence: inferred
+    when: >
+      Il manifest delle dipendenze fissa versioni per le quali risultano avvisi di
+      sicurezza pubblici, e il repository non mostra alcun meccanismo di aggiornamento
+      automatico o di analisi delle dipendenze.
+    guard: >
+      Questo rilievo riguarda l'assenza del processo, non la singola versione: la
+      valutazione puntuale spetta agli strumenti dedicati, che vanno preferiti. Non
+      elencare vulnerabilita' dedotte senza uno strumento che le confermi.
+    message: >
+      Non risulta attivo alcun controllo sistematico delle dipendenze, previsto fra le
+      misure minime di sicurezza per le amministrazioni.

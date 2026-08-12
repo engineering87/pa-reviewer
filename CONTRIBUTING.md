@@ -49,6 +49,20 @@ Fallisce se una regola non ha fonte, se una fonte e'
 incompleta, se un modulo `stable` poggia su una fonte non verificata, o se la baseline
 e' invecchiata oltre la soglia.
 
+## Permessi degli script
+
+Gli script in `scripts/` devono essere eseguibili, e il permesso va registrato
+nell'indice di Git. Se aggiungi uno script o lavori da un filesystem che non
+propaga il bit di esecuzione:
+
+```bash
+git update-index --chmod=+x scripts/nuovo-script.sh
+git ls-files -s scripts/   # i modi devono essere 100755
+```
+
+Un `chmod` sul solo filesystem non basta: il permesso non arriva a chi clona il
+repository, e la CI se ne accorge.
+
 ## Promuovere un modulo
 
 - **stub -> beta:** tutte le fonti `verified`, regole scritte con guardia.

@@ -27,7 +27,7 @@ domains:
   - id: ACC
     name: Accessibilita'
     module: accessibilita
-    maturity: stub
+    maturity: beta
     sources:
       - id: ACC-LG-EAA
         document: "Linee Guida sull'accessibilita' dei servizi in attuazione dell'articolo 21 del d.lgs. 82/2022"
@@ -94,7 +94,7 @@ domains:
   - id: DES
     name: Design system e interfacce
     module: design-system
-    maturity: stub
+    maturity: beta
     sources:
       - id: DES-LG-DESIGN
         document: "Linee guida di design per i siti internet e i servizi digitali della Pubblica Amministrazione"
@@ -145,7 +145,7 @@ domains:
   - id: INT
     name: Interoperabilita' e API
     module: interoperabilita
-    maturity: stub
+    maturity: beta
     sources:
       - id: INT-MODI
         document: "Linee guida del modello di interoperabilita' per la Pubblica Amministrazione (ModI)"
@@ -261,7 +261,7 @@ domains:
   - id: SEC
     name: Sicurezza dello sviluppo
     module: sicurezza
-    maturity: stub
+    maturity: beta
     sources:
       - id: SEC-LG-SVILUPPO
         document: "Linee guida per lo sviluppo del software sicuro nella pubblica amministrazione"
@@ -314,7 +314,7 @@ domains:
   - id: DAT
     name: Dati aperti e metadatazione
     module: dati-aperti
-    maturity: stub
+    maturity: beta
     sources:
       - id: DAT-DLGS36
         document: "D.Lgs. 24 gennaio 2006, n. 36 - apertura dei dati e riutilizzo dell'informazione del settore pubblico"

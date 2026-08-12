@@ -1,27 +1,47 @@
 # Modulo `dati-aperti`
 
-Maturita': **stub**
+Maturita': **beta**
 Fonti: `DAT-DLGS36`, `DAT-LG-PATRIMONIO`, `DAT-DCAT-AP-IT`
 
-## Stato
+## Perche' questo modulo esiste
 
-Perimetro mappato, nessun controllo attivo. **Questo modulo non emette finding.**
-Quando il profilo lo attiva, il report dichiara: dominio applicabile, copertura non
-ancora implementata.
+Il profilo nazionale di metadatazione e' documentato elemento per elemento, con esempi
+nelle serializzazioni ammesse, ed e' quindi verificabile su codice che espone cataloghi.
+Cio' che manca e' il collegamento fra quel profilo e l'applicativo che produce i metadati:
+i validatori disponibili leggono il documento pubblicato, non il codice che lo genera.
 
-## Perimetro previsto
+## Quando si attiva
 
-- Conformita' dei metadati esposti al profilo nazionale DCAT-AP_IT, verificabile su serializzazioni JSON-LD, RDF/XML e Turtle.
-- Coerenza delle licenze applicate ai dataset esposti con la raccomandazione delle Linee guida.
-- Completezza degli elementi obbligatori del profilo negli endpoint di catalogo.
+Solo per progetti che espongono cataloghi, dataset o loro metadati. Un applicativo che
+non pubblica dati non e' soggetto a questo modulo, e il profilo non deve attivarlo.
 
-## Condizioni per passare a beta
+## Sequenza operativa
 
-1. Tutte le fonti del modulo in `sources.yml` portano `verification: verified`.
-2. Ogni regola prevista e' ancorabile a `file:line`.
-3. Le regole sono scritte in `rules/dati-aperti.yml` con guardia esplicita contro i falsi
-   positivi.
+1. **Individua il punto di produzione dei metadati**, che puo' essere un endpoint, un
+   processo di esportazione o un file generato.
+2. **Determina la versione del profilo** dichiarata dal progetto: il confronto va fatto
+   con quella, non con l'ultima disponibile.
+3. **Applica le regole** in `rules/dati-aperti.yml`.
+
+## Guardie contro i falsi positivi
+
+- **Ereditarieta' dal catalogo.** Licenza ed editore possono essere dichiarati a livello
+  di catalogo e valere per i dataset: verificarlo prima di segnalare l'assenza.
+- **Elementi raccomandati.** Distinguere l'obbligatorio dal raccomandato: il secondo non
+  giustifica un rilievo importante.
+- **Limitazioni legittime.** Dati personali e diritti di terzi possono motivare
+  condizioni di riutilizzo piu' restrittive.
+- **Formati di dominio.** Alcuni ambiti, in particolare quello geografico, hanno formati
+  di riferimento propri.
+
+## Cosa questo modulo non fa
+
+Non valuta la qualita' dei dati ne' la loro completezza. Non verifica la pubblicazione
+sui portali nazionali, che e' un adempimento e non un fatto del codice.
 
 ## Condizioni per passare a stable
 
-Precisione misurata su campione pubblico e pubblicata in `evaluation/`.
+1. Tutte le fonti del modulo portano `verification: verified`.
+2. Precisione per regola misurata su campione pubblico e pubblicata in
+   `evaluation/`, con nessuna regola sotto la soglia fissata.
+3. Nessuna regola con guardia rivelatasi insufficiente durante la validazione.

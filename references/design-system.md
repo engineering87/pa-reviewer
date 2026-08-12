@@ -1,33 +1,49 @@
 # Modulo `design-system`
 
-Maturita': **stub**
+Maturita': **beta**
 Fonti: `DES-LG-DESIGN`, `DES-MANUALE`, `DES-BI-DOCS`
 
-## Stato
+## Perche' questo modulo esiste
 
-Perimetro mappato, nessun controllo attivo. **Questo modulo non emette finding.**
-Quando il profilo lo attiva, il report dichiara: dominio applicabile, copertura non
-ancora implementata.
+E' l'unico dominio del perimetro privo di validatore deterministico. Nessuno strumento
+verifica oggi se un componente e' stato riscritto a mano al posto di quello ufficiale, e
+il codice risultante compila, appare plausibile e supera qualunque analisi statica
+generica. Cio' che si perde non e' visibile nel diff: e' la gestione da tastiera, i ruoli e
+gli stati che il componente del design system porta con se'.
 
-## Perimetro previsto
+## Sequenza operativa
 
-- Reimplementazione manuale di componenti gia' presenti in Bootstrap Italia, con perdita di accessibilita' garantita dal componente ufficiale.
-- Uso di classi Bootstrap non personalizzate al posto delle varianti del design system: il codice compila e appare plausibile, ma non segue le linee guida.
-- Override di token e variabili CSS che alterano contrasto, spaziature o indicatore di focus.
-- Assenza di elementi strutturali di pagina previsti: intestazione istituzionale, pie' di pagina con i dati dell'ente, briciole di pane, collegamento di salto al contenuto.
-- Versione della libreria deprecata dichiarata nel manifest delle dipendenze.
-- Componenti inseriti nel markup senza la relativa inizializzazione JavaScript.
-- Reimplementazione parallela in progetti React o Angular che potrebbero adottare i kit ufficiali.
+1. **Determina la versione in uso.** Leggi il manifest delle dipendenze. Il tema deriva
+   da un framework di base e ne eredita le classi: senza sapere quale versione e'
+   installata non puoi stabilire quali componenti fossero disponibili.
+2. **Distingui il layout dalle viste.** Intestazione, pie' di pagina, briciole di pane e
+   collegamento di salto stanno quasi sempre nel modello condiviso. Cercarli nella
+   singola vista produce falsi positivi in serie.
+3. **Applica le regole** in `rules/design-system.yml`.
+4. **Riporta** citando la riga del markup, non quella del foglio di stile.
 
-Questo e' il dominio in cui non esiste alcun validatore deterministico, e quindi il nucleo tecnico originale del progetto.
+## Guardie contro i falsi positivi
 
-## Condizioni per passare a beta
+- **Personalizzazione contro rimozione di garanzie.** Un colore istituzionale diverso e'
+  legittimo. La rimozione dell'indicatore di messa a fuoco no. La differenza sta nel
+  valore risultante, non nella presenza della sovrascrittura.
+- **Progetti React e Angular.** I kit ufficiali gestiscono il ciclo di vita dei
+  componenti: le regole sull'inizializzazione non si applicano.
+- **Componenti applicativi.** Un componente che risolve un problema di dominio non e'
+  una duplicazione. Il rilievo riguarda solo cio' che il design system fornisce gia'.
+- **Disallineamento fra documentazione e pacchetto.** La versione riportata dalla
+  documentazione puo' restare indietro rispetto a quella pubblicata: il riferimento e'
+  il pacchetto, come annotato in `sources.yml`.
 
-1. Tutte le fonti del modulo in `sources.yml` portano `verification: verified`.
-2. Ogni regola prevista e' ancorabile a `file:line`.
-3. Le regole sono scritte in `rules/design-system.yml` con guardia esplicita contro i falsi
-   positivi.
+## Cosa questo modulo non fa
+
+Non valuta la qualita' estetica ne' l'aderenza a un'identita' visiva. Non sostituisce la
+verifica di accessibilita', che ha un modulo proprio: qui si segnala la perdita di
+garanzie derivante dalla reimplementazione, non la conformita' ai criteri.
 
 ## Condizioni per passare a stable
 
-Precisione misurata su campione pubblico e pubblicata in `evaluation/`.
+1. Tutte le fonti del modulo portano `verification: verified`.
+2. Precisione per regola misurata su campione pubblico e pubblicata in
+   `evaluation/`, con nessuna regola sotto la soglia fissata.
+3. Nessuna regola con guardia rivelatasi insufficiente durante la validazione.

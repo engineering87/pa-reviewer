@@ -1,30 +1,49 @@
 # Modulo `accessibilita`
 
-Maturita': **stub**
+Maturita': **beta**
 Fonti: `ACC-LG-EAA`, `ACC-EN301549`, `ACC-WCAG21`, `ACC-L4-2004`
 
-## Stato
+## Perche' questo modulo esiste
 
-Perimetro mappato, nessun controllo attivo. **Questo modulo non emette finding.**
-Quando il profilo lo attiva, il report dichiara: dominio applicabile, copertura non
-ancora implementata.
+La maggior parte dei criteri di accessibilita' si verifica a runtime, e per quelli
+esistono strumenti maturi. Restano scoperte tre aree: la semantica osservabile nel
+codice modificato, i componenti costruiti a mano che perdono comportamenti garantiti, e
+le disposizioni specifiche delle Linee Guida nazionali su sovrapposizioni e tracciamento
+riconducibile alla disabilita'.
 
-## Perimetro previsto
+## Sequenza operativa
 
-- Semantica del markup sulle modifiche introdotte dal diff: attributi di lingua, etichette dei campi, struttura dei titoli, ruoli ARIA malformati.
-- Componenti custom che sostituiscono componenti accessibili gia' disponibili nel design system, perdendo gestione da tastiera e annunci.
-- Presenza di overlay di accessibilita' e di meccanismi di tracciamento riconducibili a disabilita': le Linee guida contengono una disposizione esplicita sulla verifica di cookie, fingerprinting e overlay.
-- Delega ad axe-core o pa11y per contrasto, ordine di focus e comportamento a zoom, che richiedono esecuzione.
+1. **Delega prima.** Esegui `scripts/run_axe.sh` quando lo strumento e' disponibile e
+   riporta il suo esito. Se manca, dichiaralo nella sezione sui limiti: non dedurre.
+2. **Poi la semantica sul diff.** Applica le regole in `rules/accessibilita.yml` alle
+   sole modifiche in esame, salvo revisione dell'intero repository.
+3. **Riporta** distinguendo cio' che proviene dallo strumento da cio' che hai dedotto.
 
-**Fuori perimetro:** dichiarazione di accessibilita', obiettivi annuali, attestazioni sottoscritte digitalmente. Sono adempimenti, non fatti del codice.
+## Il limite da dichiarare sempre
 
-## Condizioni per passare a beta
+Contrasto effettivo, ordine di messa a fuoco, comportamento a ingrandimento e uso reale
+con tecnologie assistive **non sono verificabili staticamente**. Non vanno dedotti dal
+codice in nessuna circostanza. La verifica automatica, anche a runtime, intercetta una
+parte dei problemi: il resto richiede prova manuale e con utenti.
 
-1. Tutte le fonti del modulo in `sources.yml` portano `verification: verified`.
-2. Ogni regola prevista e' ancorabile a `file:line`.
-3. Le regole sono scritte in `rules/accessibilita.yml` con guardia esplicita contro i falsi
-   positivi.
+## Guardie contro i falsi positivi
+
+- **Alternativa vuota.** Su un'immagine decorativa e' corretta, non e' un difetto.
+- **Nome accessibile fornito altrimenti.** Un controllo puo' esporlo senza etichetta
+  visibile: verificare prima di segnalare.
+- **Frammenti e viste parziali.** Attributo di lingua e gerarchia dei titoli vanno
+  valutati sulla pagina composta, non sul singolo componente.
+- **Preferenze di sistema.** Adattare l'interfaccia a una preferenza e' legittimo. Il
+  rilievo riguarda la registrazione o la trasmissione del dato.
+
+## Cosa questo modulo non fa
+
+Non produce dichiarazioni di accessibilita' ne' attestazioni, che richiedono
+sottoscrizione formale e stanno fra gli adempimenti non verificabili dal codice.
 
 ## Condizioni per passare a stable
 
-Precisione misurata su campione pubblico e pubblicata in `evaluation/`.
+1. Tutte le fonti del modulo portano `verification: verified`.
+2. Precisione per regola misurata su campione pubblico e pubblicata in
+   `evaluation/`, con nessuna regola sotto la soglia fissata.
+3. Nessuna regola con guardia rivelatasi insufficiente durante la validazione.

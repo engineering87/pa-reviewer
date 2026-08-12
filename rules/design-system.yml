@@ -1,0 +1,150 @@
+module: design-system
+maturity: beta
+
+# Dominio privo di validatore deterministico. Ogni rilievo nasce dalla lettura del
+# codice, quindi la guardia conta piu' che altrove: senza, il modulo diventa rumore.
+
+rules:
+
+  - id: DES-001
+    title: "versione deprecata del tema dichiarata nelle dipendenze"
+    source: DES-BI-DOCS
+    check: structural
+    severity: important
+    evidence: inferred
+    when: >
+      Il manifest delle dipendenze richiede bootstrap-italia con vincolo di versione
+      1.x, oppure una versione dichiarata deprecata dalla documentazione ufficiale.
+    guard: >
+      Verificare il vincolo effettivo, non l'ultima versione installata: un intervallo
+      che ammette la 2.x non e' un rilievo. Escludere le dipendenze di sviluppo e i
+      progetti in migrazione dichiarata nel README.
+    message: >
+      Il progetto dipende da una versione del tema dichiarata deprecata dalla
+      documentazione ufficiale del design system.
+
+  - id: DES-002
+    title: "componente del design system reimplementato a mano"
+    source: DES-MANUALE
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il markup ricostruisce un componente gia' fornito dal design system, tipicamente
+      accordion, dropdown, modale, carosello, tab o tooltip, con markup e gestori di
+      evento propri.
+    guard: >
+      Emettere solo se il componente ufficiale esiste nella versione in uso e copre il
+      caso d'uso. Una variazione grafica non giustifica il rilievo; una perdita di
+      comportamento si'. Citare la riga del markup, non il file di stile.
+    message: >
+      Il componente e' ricostruito manualmente pur essendo disponibile nel design
+      system. La versione ufficiale porta con se' gestione da tastiera, ruoli e stati
+      che la reimplementazione deve replicare per intero.
+
+  - id: DES-003
+    title: "componente inserito senza l'inizializzazione richiesta"
+    source: DES-BI-DOCS
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il markup usa un componente che richiede inizializzazione JavaScript, ma il
+      bundle non importa il modulo corrispondente e non risulta alcuna inizializzazione
+      esplicita.
+    guard: >
+      Verificare se il progetto importa il bundle completo del tema, nel qual caso
+      l'inizializzazione e' implicita. Nei progetti React o Angular il componente del
+      kit gestisce il ciclo di vita da se': non emettere.
+    message: >
+      Il componente e' presente nel markup ma non risulta inizializzato: il
+      comportamento interattivo non viene attivato.
+
+  - id: DES-004
+    title: "classi generiche del framework al posto delle varianti del design system"
+    source: DES-LG-DESIGN
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il markup usa classi del framework di base dove il design system prevede una
+      variante propria, per esempio nei pulsanti, nelle schede e negli avvisi.
+    guard: >
+      Il tema eredita dal framework di base, quindi il codice funziona e appare
+      plausibile: il rilievo riguarda l'aderenza alle linee guida, non un difetto
+      funzionale. Mantenere severita' minima e non insistere su casi isolati.
+    message: >
+      La classe usata appartiene al framework di base anziche' alla variante prevista
+      dal design system.
+
+  - id: DES-005
+    title: "sovrascrittura di variabili del tema che incidono su contrasto o messa a fuoco"
+    source: DES-LG-DESIGN
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il foglio di stile ridefinisce variabili o regole del tema relative a colori di
+      testo e sfondo, indicatore di messa a fuoco, dimensioni minime dei bersagli
+      tattili.
+    guard: >
+      Distinguere la personalizzazione legittima dell'identita' dell'ente dalla
+      rimozione di una garanzia: l'eliminazione dell'indicatore di messa a fuoco e'
+      sempre un rilievo, un colore istituzionale diverso no. Verificare il valore
+      risultante, non la sola presenza della sovrascrittura.
+    message: >
+      La sovrascrittura incide su una proprieta' che il design system garantisce per
+      l'uso da tastiera o per la leggibilita'.
+
+  - id: DES-006
+    title: "elementi strutturali di pagina assenti"
+    source: DES-LG-DESIGN
+    check: structural
+    severity: important
+    evidence: inferred
+    when: >
+      Il modello di pagina non prevede uno degli elementi strutturali attesi da un
+      servizio pubblico: intestazione istituzionale, pie' di pagina con i dati
+      dell'ente, briciole di pane nelle pagine interne, collegamento di salto al
+      contenuto.
+    guard: >
+      Verificare il modello condiviso prima delle singole viste: l'elemento e' quasi
+      sempre nel layout, non nella pagina in esame. Non emettere su componenti isolati,
+      pagine di errore minimali o viste incorporate.
+    message: >
+      Il modello di pagina non contiene un elemento strutturale previsto per i servizi
+      digitali della pubblica amministrazione.
+
+  - id: DES-007
+    title: "reimplementazione parallela in progetti React o Angular"
+    source: DES-MANUALE
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il progetto usa React dalla versione 18 in poi, oppure Angular, e definisce
+      componenti propri che duplicano quelli forniti dai kit ufficiali derivati dal
+      design system.
+    guard: >
+      Non emettere se il kit non fornisce il componente in questione o se il progetto
+      documenta un vincolo di versione incompatibile. La segnalazione riguarda la
+      duplicazione, non l'esistenza di componenti applicativi.
+    message: >
+      Esistono kit ufficiali derivati dal design system per questo framework: il
+      componente duplicato potrebbe esserne adottato.
+
+  - id: DES-008
+    title: "risorse tipografiche o iconografiche caricate da fonti esterne"
+    source: DES-BI-DOCS
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il progetto carica caratteri tipografici o insiemi di icone da servizi esterni
+      anziche' usare quelli distribuiti con il tema.
+    guard: >
+      Rilievo di aderenza, non di sicurezza: mantenere severita' minima. Non emettere
+      se la risorsa non ha equivalente nel design system.
+    message: >
+      Le risorse tipografiche o iconografiche non provengono dal design system, che le
+      distribuisce insieme al tema.

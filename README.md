@@ -8,11 +8,12 @@ Una *agent skill* che verifica il codice destinato agli enti pubblici rispetto a
 
 [![Test](https://github.com/engineering87/pa-reviewer/actions/workflows/tests.yml/badge.svg)](https://github.com/engineering87/pa-reviewer/actions/workflows/tests.yml)
 [![CI](https://github.com/engineering87/pa-reviewer/actions/workflows/ci.yml/badge.svg)](https://github.com/engineering87/pa-reviewer/actions/workflows/ci.yml)
-[![Invarianti](https://img.shields.io/badge/invarianti-102%20test-1B6FD4.svg)](./tests/README.md)
+[![Invarianti](https://img.shields.io/badge/invarianti-106%20test-1B6FD4.svg)](./tests/README.md)
 [![Copertura](https://img.shields.io/badge/copertura-%E2%89%A590%25-1B6FD4.svg)](./tests/README.md#copertura)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-5A6B7D.svg)](./requirements-dev.txt)
 [![Licenza](https://img.shields.io/badge/licenza-EUPL--1.2-0A4FA3.svg)](./LICENSE)
 [![Fonti](https://img.shields.io/badge/fonti-24%20registrate-1B6FD4.svg)](./sources.yml)
+[![Regole](https://img.shields.io/badge/regole-51%20attive-1B6FD4.svg)](./rules)
 [![Stato](https://img.shields.io/badge/stato-development-5A6B7D.svg)](./CHANGELOG.md)
 
 <sub>Progetto indipendente. Non affiliato, promosso né approvato da AgID, dal Dipartimento per la trasformazione digitale o da altre istituzioni.<br>**Non è uno strumento di certificazione e non emette giudizi di conformità.**</sub>
@@ -258,18 +259,23 @@ mancante.
 
 ## Moduli
 
-| Modulo | Stato | Copertura |
-| :--- | :--- | :--- |
-| `riuso` | **beta** | coerenza fra `publiccode.yml` e codice, 12 regole |
-| `design-system` | stub | perimetro mappato, nessun validatore esistente altrove |
-| `accessibilita` | stub | perimetro mappato |
-| `interoperabilita` | stub | perimetro mappato |
-| `sicurezza` | stub | perimetro mappato |
-| `dati-aperti` | stub | perimetro mappato |
-| `ia` | stub | in attesa dell'adozione definitiva delle linee guida |
+| Modulo | Stato | Regole | Copertura |
+| :--- | :--- | ---: | :--- |
+| `riuso` | **beta** | 12 | coerenza fra `publiccode.yml` e codice |
+| `design-system` | **beta** | 8 | componenti riscritti a mano, elementi di pagina, versione del tema |
+| `accessibilita` | **beta** | 9 | semantica sul diff, sovrapposizioni, tracciamento della disabilità |
+| `interoperabilita` | **beta** | 8 | scostamento fra specifica OpenAPI e implementazione |
+| `sicurezza` | **beta** | 8 | segreti, trasporto, registrazione di dati personali |
+| `dati-aperti` | **beta** | 6 | profilo nazionale di metadatazione |
+| `ia` | stub | 0 | in attesa dell'adozione definitiva delle linee guida |
 
-Uno **stub** non emette mai rilievi: dichiara che il dominio è applicabile e che la
-copertura non è implementata. Il perimetro può essere completo anche quando
+In totale 51 regole attive, tutte in stato beta: scritte e riconducibili a una fonte, non
+ancora validate su campione.
+
+Lo stato **beta** significa che le regole esistono, poggiano su una fonte registrata e
+hanno una guardia contro i falsi positivi, ma non hanno ancora una precisione misurata:
+i rilievi sono contrassegnati come non validati. Uno **stub** non emette mai rilievi:
+dichiara che il dominio è applicabile e che la copertura non è implementata. Il perimetro può essere completo anche quando
 l'implementazione non lo è, purché la differenza sia visibile a chi legge il report.
 
 Il passaggio a **stable** richiede precisione misurata e pubblicata in
@@ -312,7 +318,7 @@ python scripts/check_sources.py --sources sources.yml --check-urls
 
 Il repository verifica sé stesso su due piani distinti, e vale la pena non confonderli.
 
-**Invarianti dell'artefatto** — 102 test che controllano ciò che è controllabile in modo
+**Invarianti dell'artefatto** — 106 test che controllano ciò che è controllabile in modo
 deterministico: che ogni regola abbia una fonte esistente e una guardia non vuota, che i
 numeri dichiarati nel README corrispondano al contenuto reale, che il gate blocchi
 davvero i casi che dichiara di bloccare, che lo schema rifiuti un rilievo inferito senza

@@ -28,6 +28,7 @@ python -m pytest tests/ -q
 | `test_gate.py` | comportamento del gate, con particolare insistenza sui casi negativi |
 | `test_docs.py` | coerenza fra documentazione e contenuto, frontmatter, collegamenti |
 | `test_schema.py` | schema dei rilievi e metadatazione `publiccode.yml` del progetto |
+| `test_moduli.py` | conteggi per modulo nella tabella del README contro i file di regole |
 | `test_selfcheck.py` | autocoerenza: i numeri dichiarati nei badge devono essere veri |
 
 ## Due test che meritano una nota

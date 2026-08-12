@@ -1,0 +1,106 @@
+module: dati-aperti
+maturity: beta
+
+# Il modulo si applica solo ai progetti che espongono cataloghi o dataset. Su un
+# applicativo che non pubblica dati, il profilo non lo attiva affatto.
+
+rules:
+
+  - id: DAT-001
+    title: "catalogo esposto senza metadatazione secondo il profilo nazionale"
+    source: DAT-DCAT-AP-IT
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il progetto espone un elenco di dataset senza produrre i metadati previsti dal
+      profilo nazionale in alcuna delle serializzazioni ammesse.
+    guard: >
+      Verificare che si tratti di un catalogo destinato alla pubblicazione e non di un
+      elenco interno all'applicativo. Se il catalogo e' alimentato verso un portale
+      esterno, cercare l'esportazione prima di concludere.
+    message: >
+      Il catalogo non espone metadati secondo il profilo nazionale: i dataset non sono
+      raccoglibili dai cataloghi federati.
+
+  - id: DAT-002
+    title: "elementi obbligatori del profilo assenti"
+    source: DAT-DCAT-AP-IT
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      I metadati prodotti non valorizzano uno degli elementi che il profilo nazionale
+      indica come obbligatori per il catalogo o per il singolo dataset.
+    guard: >
+      Confrontare con la versione del profilo dichiarata dal progetto, non con l'ultima
+      disponibile. Un elemento raccomandato e non obbligatorio va segnalato al piu'
+      come rilievo minore.
+    message: >
+      L'elemento e' indicato come obbligatorio dal profilo nazionale di metadatazione.
+
+  - id: DAT-003
+    title: "licenza del dataset assente o non aperta"
+    source: DAT-LG-PATRIMONIO
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il dataset esposto non dichiara una licenza, oppure dichiara condizioni che ne
+      limitano il riutilizzo.
+    guard: >
+      Verificare la licenza a livello di catalogo prima di segnalare il singolo
+      dataset: puo' essere ereditata. Le limitazioni derivanti da dati personali o da
+      diritti di terzi sono legittime e vanno distinte.
+    message: >
+      Le linee guida nazionali raccomandano una licenza aperta di riferimento per i
+      dati delle amministrazioni.
+
+  - id: DAT-004
+    title: "serializzazione non prevista dal profilo"
+    source: DAT-DCAT-AP-IT
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      I metadati sono esposti in un formato diverso da quelli per i quali il profilo
+      fornisce istruzioni ed esempi.
+    guard: >
+      Un formato aggiuntivo affiancato a quelli previsti non e' un rilievo: il
+      problema si pone solo se nessuna serializzazione ammessa e' disponibile.
+    message: >
+      Nessuna delle serializzazioni previste dal profilo risulta esposta.
+
+  - id: DAT-005
+    title: "identificativi dei dataset non stabili"
+    source: DAT-DCAT-AP-IT
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Gli identificativi dei dataset sono generati a ogni pubblicazione, oppure
+      derivano da elementi mutevoli come l'ordinamento o la data di estrazione.
+    guard: >
+      Verificare il comportamento su piu' esecuzioni prima di concludere: un
+      identificativo che appare casuale puo' essere deterministico. Formulare come
+      mancato riscontro se il codice non consente di stabilirlo.
+    message: >
+      L'identificativo non e' stabile nel tempo: i riferimenti esterni al dataset si
+      rompono a ogni pubblicazione.
+
+  - id: DAT-006
+    title: "dati pubblicati solo in formati non aperti"
+    source: DAT-DLGS36
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Le distribuzioni disponibili per un dataset usano esclusivamente formati
+      proprietari o non elaborabili automaticamente.
+    guard: >
+      La presenza di un formato proprietario accanto a uno aperto non e' un rilievo.
+      Considerare le esigenze del dominio: alcuni dati geografici hanno formati di
+      riferimento specifici.
+    message: >
+      Il riutilizzo dei dati presuppone formati aperti ed elaborabili
+      automaticamente.

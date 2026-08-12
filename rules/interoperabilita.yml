@@ -1,0 +1,142 @@
+module: interoperabilita
+maturity: beta
+
+# Il checker ufficiale legge la specifica. Questo modulo legge il codice che dovrebbe
+# realizzarla: lo scostamento fra i due lati del contratto e' cio' che nessun linter
+# di specifiche puo' rilevare.
+
+rules:
+
+  - id: INT-001
+    title: "la specifica non supera il checker ufficiale"
+    source: INT-OAS-CHECKER
+    check: deterministic
+    severity: important
+    evidence: deterministic
+    tool: spectral
+    when: >
+      L'esecuzione del checker con il profilo delle linee guida italiane restituisce
+      errori.
+    guard: >
+      Riportare identificativi delle regole e conteggi cosi' come prodotti dallo
+      strumento, senza riformularli. Se lo strumento non e' disponibile, dichiarare la
+      copertura mancante anziche' dedurne l'esito.
+    message: >
+      Per la pubblicazione nel Catalogo API della piattaforma nazionale l'ente e' tenuto
+      a ottenere zero errori con il profilo completo delle linee guida italiane.
+
+  - id: INT-002
+    title: "rotta implementata e assente dalla specifica"
+    source: INT-MODI
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il codice espone un percorso che la specifica pubblicata non documenta.
+    guard: >
+      Escludere le rotte tecniche non destinate ai consumatori, per esempio sonde di
+      stato, metriche e pagine di diagnostica, quando sono riconoscibili come tali.
+      Verificare eventuali specifiche generate a compilazione prima di concludere.
+    message: >
+      Il percorso e' raggiungibile ma non compare nella specifica: i consumatori non
+      possono conoscerlo e il contratto pubblicato risulta incompleto.
+
+  - id: INT-003
+    title: "rotta documentata e non implementata"
+    source: INT-MODI
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      La specifica documenta un percorso che non trova corrispondenza nel codice del
+      repository.
+    guard: >
+      Formulare come mancato riscontro ed elencare dove si e' cercato: l'attuazione
+      puo' risiedere in un servizio esterno o dietro un gateway. Declassare a
+      informativo quando il progetto dichiara componenti esterni.
+    message: >
+      Il percorso e' documentato ma non risulta implementato in questo repository.
+
+  - id: INT-004
+    title: "esiti divergenti fra specifica e implementazione"
+    source: INT-MODI
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il codice restituisce codici di stato che la specifica non prevede per quel
+      percorso, oppure non restituisce quelli dichiarati.
+    guard: >
+      Considerare la gestione centralizzata degli errori prima di segnalare: un esito
+      non presente nel controller puo' essere prodotto da un gestore comune. Citare
+      entrambe le posizioni, nella specifica e nel codice.
+    message: >
+      Gli esiti dichiarati nella specifica non corrispondono a quelli prodotti dal
+      codice.
+
+  - id: INT-005
+    title: "parametri o corpo della richiesta non documentati"
+    source: INT-MODI
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il codice legge parametri di interrogazione, intestazioni o campi del corpo che
+      la specifica non descrive.
+    guard: >
+      Escludere le intestazioni gestite dall'infrastruttura e i parametri di traccia.
+      Un parametro facoltativo non documentato resta un rilievo minore.
+    message: >
+      Il contratto pubblicato non descrive un elemento della richiesta che il codice
+      utilizza.
+
+  - id: INT-006
+    title: "requisiti di sicurezza dichiarati e non applicati"
+    source: INT-MODI
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      La specifica dichiara uno schema di sicurezza per un percorso, ma il codice
+      corrispondente non applica alcun controllo di autenticazione o autorizzazione.
+    guard: >
+      Verificare i filtri applicati a livello di applicazione, di modulo e di gateway
+      prima di emettere: il controllo raramente sta nel metodo. Emettere solo con la
+      riga che dimostra l'assenza lungo tutta la catena esaminata, elencando i punti
+      ispezionati.
+    message: >
+      Lo schema di sicurezza dichiarato nella specifica non trova riscontro nel percorso
+      corrispondente.
+
+  - id: INT-007
+    title: "interfacce esposte senza specifica pubblicata"
+    source: INT-MODI
+    check: structural
+    severity: important
+    evidence: inferred
+    when: >
+      Il repository espone interfacce destinate al consumo da parte di terzi ma non
+      contiene alcuna specifica OpenAPI.
+    guard: >
+      Non emettere per interfacce interne al prodotto, per esempio quelle usate solo
+      dal proprio frontend, ne' per applicativi privi di superficie di
+      interoperabilita'.
+    message: >
+      Le linee guida sull'interoperabilita' presuppongono un contratto pubblicato e
+      verificabile per le interfacce destinate a terzi.
+
+  - id: INT-008
+    title: "versionamento dell'interfaccia non riconoscibile"
+    source: INT-MODI
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Ne' il percorso base ne' la specifica espongono un'indicazione di versione, e non
+      esiste altra strategia documentata di evoluzione del contratto.
+    guard: >
+      Verificare se la versione e' gestita tramite negoziazione del contenuto o
+      intestazioni dedicate: e' una strategia legittima e non va segnalata.
+    message: >
+      Il contratto non espone una versione: le modifiche future non sono distinguibili
+      dai consumatori.

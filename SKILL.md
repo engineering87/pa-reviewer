@@ -71,11 +71,11 @@ profilo lo richiede.
 | Modulo | Riferimento | Maturita' |
 | --- | --- | --- |
 | `riuso` | `references/riuso.md` | beta |
-| `design-system` | `references/design-system.md` | stub |
-| `accessibilita` | `references/accessibilita.md` | stub |
-| `interoperabilita` | `references/interoperabilita.md` | stub |
-| `sicurezza` | `references/sicurezza.md` | stub |
-| `dati-aperti` | `references/dati-aperti.md` | stub |
+| `design-system` | `references/design-system.md` | beta |
+| `accessibilita` | `references/accessibilita.md` | beta |
+| `interoperabilita` | `references/interoperabilita.md` | beta |
+| `sicurezza` | `references/sicurezza.md` | beta |
+| `dati-aperti` | `references/dati-aperti.md` | beta |
 | `ia` | `references/ia.md` | stub |
 
 **Un modulo `stub` non emette mai finding.** Dichiara nel report che il dominio e'

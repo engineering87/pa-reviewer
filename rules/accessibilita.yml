@@ -1,0 +1,162 @@
+module: accessibilita
+maturity: beta
+
+# Gran parte dei criteri e' verificabile solo a runtime. Questo modulo copre la
+# semantica osservabile nel codice e delega il resto, dichiarando la copertura
+# mancante quando lo strumento non e' disponibile.
+
+rules:
+
+  - id: ACC-001
+    title: "sovrapposizione di accessibilita' presente nel progetto"
+    source: ACC-LG-EAA
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il progetto include uno script di sovrapposizione che dichiara di rendere
+      accessibile il sito modificandolo dal lato del visitatore.
+    guard: >
+      Distinguere la sovrapposizione da un pannello di preferenze costruito nel
+      prodotto, per esempio un selettore di contrasto o di dimensione del testo, che
+      non e' un rilievo. Citare la riga che carica lo script.
+    message: >
+      Le Linee Guida sull'accessibilita' dei servizi richiedono la verifica delle
+      sovrapposizioni di accessibilita'. Uno strumento applicato dall'esterno non
+      sostituisce l'accessibilita' del prodotto.
+
+  - id: ACC-002
+    title: "tracciamento riconducibile alla disabilita' dell'utente"
+    source: ACC-LG-EAA
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il codice registra, trasmette o profila l'uso di tecnologie assistive, le
+      preferenze di accessibilita' del sistema operativo o l'attivazione di modalita'
+      ad alto contrasto e riduzione del movimento.
+    guard: >
+      Adattare l'interfaccia a una preferenza di sistema e' legittimo e non va
+      segnalato. Il rilievo riguarda la registrazione o la trasmissione del dato, non
+      la sua lettura. Citare la riga che invia o memorizza.
+    message: >
+      Il dato raccolto e' riconducibile a una condizione di disabilita'. Le Linee Guida
+      richiedono la verifica di cookie, rilevamento del dispositivo e sovrapposizioni
+      sotto questo profilo.
+
+  - id: ACC-003
+    title: "lingua del documento non dichiarata"
+    source: ACC-WCAG21
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      L'elemento radice del documento non porta l'attributo di lingua, oppure il valore
+      dichiarato non corrisponde alla lingua effettiva dei contenuti.
+    guard: >
+      Verificare il modello condiviso prima delle viste parziali: l'attributo sta quasi
+      sempre nel layout. Non emettere su frammenti destinati a essere inclusi.
+    message: >
+      La lingua del documento non e' dichiarata: le tecnologie assistive non possono
+      selezionare la pronuncia corretta.
+
+  - id: ACC-004
+    title: "campo di modulo privo di etichetta associata"
+    source: ACC-WCAG21
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Un controllo di modulo non ha un'etichetta collegata, ne' un nome accessibile
+      fornito in altro modo.
+    guard: >
+      Il testo segnaposto non e' un'etichetta, ma un nome accessibile fornito tramite
+      attributi dedicati lo e': verificarne la presenza prima di emettere. Considerare
+      i componenti del design system, che l'etichetta la generano.
+    message: >
+      Il controllo non espone un nome accessibile: chi usa uno screen reader non puo'
+      sapere cosa inserire.
+
+  - id: ACC-005
+    title: "immagine priva di alternativa testuale"
+    source: ACC-WCAG21
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Un'immagine informativa non ha alternativa testuale, oppure l'alternativa ripete
+      il nome del file.
+    guard: >
+      Le immagini decorative devono avere alternativa vuota, che e' corretta e non va
+      segnalata. Non emettere su icone accompagnate da testo visibile equivalente.
+    message: >
+      L'immagine trasporta informazione ma non espone un'alternativa testuale
+      significativa.
+
+  - id: ACC-006
+    title: "elemento interattivo costruito su un elemento non interattivo"
+    source: ACC-WCAG21
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Un gestore di evento di attivazione e' applicato a un elemento generico privo di
+      ruolo, di indice di tabulazione e di gestione degli eventi da tastiera.
+    guard: >
+      Emettere solo quando mancano tutti gli elementi: ruolo, raggiungibilita' da
+      tastiera e attivazione da tastiera. La presenza di un componente del design
+      system che li fornisce esclude il rilievo.
+    message: >
+      L'elemento e' attivabile solo con il puntatore: non e' raggiungibile ne'
+      azionabile da tastiera.
+
+  - id: ACC-007
+    title: "riferimento ARIA che punta a un identificativo inesistente"
+    source: ACC-WCAG21
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Un attributo che riferisce altri elementi tramite identificativo punta a un
+      identificativo non presente nel documento generato.
+    guard: >
+      Nei contenuti generati dinamicamente l'elemento riferito puo' comparire a runtime:
+      verificare il modello completo prima di emettere, e in caso di dubbio formulare
+      come mancato riscontro.
+    message: >
+      Il riferimento non risolve: l'informazione associata non raggiunge le tecnologie
+      assistive.
+
+  - id: ACC-008
+    title: "gerarchia dei titoli interrotta"
+    source: ACC-WCAG21
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      La pagina non ha un titolo di primo livello, oppure la sequenza dei livelli salta
+      un grado.
+    guard: >
+      Valutare la pagina composta, non il singolo componente: un frammento che comincia
+      da un livello intermedio e' corretto nel suo contesto.
+    message: >
+      La struttura dei titoli non e' sequenziale: la navigazione per intestazioni
+      diventa inaffidabile.
+
+  - id: ACC-009
+    title: "verifica a runtime non eseguita"
+    source: ACC-EN301549
+    check: deterministic
+    severity: nit
+    evidence: deterministic
+    tool: pa11y
+    when: >
+      Lo strumento di verifica a runtime non e' disponibile nell'ambiente, oppure la sua
+      esecuzione riporta violazioni.
+    guard: >
+      Quando lo strumento manca, il rilievo non e' un difetto del codice ma una
+      copertura assente: riportarlo nella sezione sui limiti della revisione e non fra
+      i rilievi. Contrasto, ordine di messa a fuoco e comportamento a ingrandimento non
+      sono verificabili staticamente e non vanno dedotti.
+    message: >
+      I criteri verificabili solo a runtime non risultano coperti da questa revisione.
