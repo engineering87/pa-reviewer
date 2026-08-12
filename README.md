@@ -234,6 +234,24 @@ così chi legge il report sa cosa non è stato verificato.
 
 </details>
 
+### Compatibilità con altri agenti
+
+`SKILL.md` non è un formato proprietario: è la specifica aperta Agent Skills, e diversi
+agenti oltre a Claude Code la leggono, con cartelle analoghe (`.openclaw/skills/`,
+`~/.agents/skills/` e altre a seconda dello strumento).
+
+Questa skill è scritta per essere portabile: il frontmatter usa solo campi della
+specifica, il corpo è markdown senza funzionalità legate a un singolo agente, e i
+riferimenti ai moduli sono percorsi relativi ordinari. **Non è però stata provata al di
+fuori di Claude Code**, quindi il progetto non dichiara una compatibilità che non ha
+verificato. Riscontri di funzionamento altrove sono benvenuti in una issue.
+
+Un vincolo vale comunque, indipendentemente dall'agente: la delega agli strumenti
+ufficiali richiede l'esecuzione di comandi di shell. Dove non è disponibile, la parte
+deterministica non gira e resta la sola verifica di coerenza per lettura del codice. La
+differenza compare nella sezione sui limiti del report, come ogni altra copertura
+mancante.
+
 ## Moduli
 
 | Modulo | Stato | Copertura |
