@@ -4,3 +4,4 @@ __pycache__/
 node_modules/
 evaluation/runs/
 *.local.yml
+.pytest_cache/

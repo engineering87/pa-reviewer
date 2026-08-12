@@ -6,7 +6,11 @@
 
 Una *agent skill* che verifica il codice destinato agli enti pubblici rispetto alle linee guida nazionali e agli obblighi del Codice dell'Amministrazione Digitale.
 
+[![Test](https://github.com/engineering87/pa-reviewer/actions/workflows/tests.yml/badge.svg)](https://github.com/engineering87/pa-reviewer/actions/workflows/tests.yml)
 [![CI](https://github.com/engineering87/pa-reviewer/actions/workflows/ci.yml/badge.svg)](https://github.com/engineering87/pa-reviewer/actions/workflows/ci.yml)
+[![Invarianti](https://img.shields.io/badge/invarianti-102%20test-1B6FD4.svg)](./tests/README.md)
+[![Copertura](https://img.shields.io/badge/copertura-%E2%89%A590%25-1B6FD4.svg)](./tests/README.md#copertura)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-5A6B7D.svg)](./requirements-dev.txt)
 [![Licenza](https://img.shields.io/badge/licenza-EUPL--1.2-0A4FA3.svg)](./LICENSE)
 [![Fonti](https://img.shields.io/badge/fonti-24%20registrate-1B6FD4.svg)](./sources.yml)
 [![Stato](https://img.shields.io/badge/stato-development-5A6B7D.svg)](./CHANGELOG.md)
@@ -303,6 +307,26 @@ pip install pyyaml
 python scripts/check_sources.py --sources sources.yml --rules rules/
 python scripts/check_sources.py --sources sources.yml --check-urls
 ```
+
+## Qualità
+
+Il repository verifica sé stesso su due piani distinti, e vale la pena non confonderli.
+
+**Invarianti dell'artefatto** — 102 test che controllano ciò che è controllabile in modo
+deterministico: che ogni regola abbia una fonte esistente e una guardia non vuota, che i
+numeri dichiarati nel README corrispondano al contenuto reale, che il gate blocchi
+davvero i casi che dichiara di bloccare, che lo schema rifiuti un rilievo inferito senza
+`file:line`. Girano su tre versioni di Python a ogni push.
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest tests/ -q
+```
+
+**Qualità dei giudizi** — non è materia da unit test: si misura sul campo, sul catalogo
+del riuso, con il metodo e i criteri fissati in [`evaluation/`](./evaluation/README.md).
+Nessun modulo passa a `stable` senza quei numeri. Una suite verde dice che lo strumento
+è ben costruito, non che ha ragione.
 
 <details>
 <summary><b>Struttura del repository</b></summary>

@@ -29,5 +29,8 @@ Primo rilascio.
 - Controllo di raggiungibilita' delle fonti che distingue il collegamento morto
   (404, 410, errore) dall'accesso automatico negato dai portali istituzionali
   (403 e simili, avviso), con possibilita' di dichiarare `url_check: skip`.
+- Suite di 102 test sugli invarianti dell'artefatto (`tests/`), eseguita su tre versioni
+  di Python, con distinzione esplicita rispetto alla validazione empirica dei giudizi,
+  e soglia minima di copertura del codice eseguibile imposta in integrazione continua.
 - Licenza EUPL-1.2 con nota esplicativa (`NOTICE.md`), codice di condotta, politica di
   sicurezza, identita' visiva.

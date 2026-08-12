@@ -36,11 +36,16 @@ non serve a nessuno in sede di collaudo.
 ## Verifica locale
 
 ```bash
-pip install pyyaml
+pip install -r requirements-dev.txt
 python scripts/check_sources.py --sources sources.yml --rules rules/
+python -m pytest tests/ -q
 ```
 
-La CI esegue lo stesso comando. Fallisce se una regola non ha fonte, se una fonte e'
+La CI esegue gli stessi comandi. I test verificano anche le condizioni che questo
+documento dichiara obbligatorie: una regola senza guardia, o con una guardia simbolica,
+fa fallire la build.
+
+Fallisce se una regola non ha fonte, se una fonte e'
 incompleta, se un modulo `stable` poggia su una fonte non verificata, o se la baseline
 e' invecchiata oltre la soglia.
 
