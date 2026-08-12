@@ -1,0 +1,69 @@
+# Metadatazione secondo lo standard publiccode.yml.
+#
+# NOTA: questo progetto NON e' di titolarita' di una pubblica amministrazione.
+# Il file e' incluso per coerenza (uno strumento che verifica publiccode.yml deve
+# esibirne uno valido) e per consentire l'autoverifica in integrazione continua.
+# Le modalita' di censimento nel catalogo per software non di titolarita' pubblica
+# vanno verificate presso Developers Italia prima di qualunque richiesta.
+#
+# Le chiavi it.conforme non sono valorizzate: sono autodichiarazioni, e questo
+# progetto esiste per non darle per buone senza riscontro nel codice.
+#
+# publiccodeYmlVersion: "0" indica al parser di interpretare il file secondo l'ultima
+# versione dello standard. Il parser ufficiale accetta 0, 0.2, 0.2.x, 0.3, 0.3.0,
+# 0.4, 0.4.0, 0.5, 0.5.0, 0.7, 0.7.0, ed emette un avviso per ogni valore diverso da
+# "0" o "0.7.x", raccomandando "0". Per fissare la versione anziche' seguirla,
+# sostituire con "0.7.0".
+
+publiccodeYmlVersion: "0"
+
+name: pa-reviewer
+url: "https://github.com/engineering87/pa-reviewer"
+landingURL: "https://github.com/engineering87/pa-reviewer"
+
+softwareVersion: "0.1.0"
+releaseDate: "2026-08-12"
+
+developmentStatus: development
+softwareType: standalone/other
+
+platforms:
+  - linux
+  - mac
+  - windows
+
+categories:
+  - it-development
+
+maintenance:
+  type: community
+  contacts:
+    - name: "Francesco Del Re"
+
+legal:
+  license: EUPL-1.2
+  repoOwner: "Francesco Del Re"
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - it
+
+description:
+  it:
+    shortDescription: >-
+      Revisione del codice per progetti della Pubblica Amministrazione italiana
+      rispetto alle linee guida e agli obblighi del CAD.
+    longDescription: >-
+      pa-reviewer verifica il codice destinato a enti pubblici italiani rispetto alle
+      linee guida nazionali e agli obblighi del Codice dell'Amministrazione Digitale.
+      Delega ai validatori ufficiali dove esistono e si concentra su cio' che quelli
+      non possono fare: la coerenza fra le autodichiarazioni del progetto e il codice
+      effettivo, i domini privi di validatore come il design system, e lo scostamento
+      fra specifica di interfaccia e implementazione. Non e' uno strumento di
+      certificazione e non emette giudizi di conformita'. Ogni regola e' riconducibile
+      a una fonte pubblica registrata, con livello di verifica esplicito.
+    features:
+      - Verifica di coerenza tra publiccode.yml e codice
+      - Delega ai validatori ufficiali dell'ecosistema
+      - Registro delle fonti normative verificato in integrazione continua

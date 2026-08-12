@@ -1,0 +1,207 @@
+module: riuso
+maturity: beta
+
+# Ogni regola dichiara:
+#   source        - id in sources.yml (obbligatorio, verificato in CI)
+#   check         - deterministic | coherence | structural
+#   evidence      - livello di evidenza del finding prodotto
+#   guard         - condizione che deve essere soddisfatta prima di emettere il finding
+
+rules:
+
+  - id: RIU-001
+    title: "publiccode.yml assente"
+    source: RIU-CAD-68-69
+    check: structural
+    severity: important
+    evidence: inferred
+    when: >
+      Il repository presenta segnali di titolarita' pubblica: riferimenti a un ente
+      nel README, dominio istituzionale, codice IPA, o dichiarazione esplicita
+      dell'utente che si tratta di software commissionato da una PA.
+    guard: >
+      Non emettere se il repository e' una libreria generica, un fork non modificato,
+      o se non esiste alcun segnale di committenza pubblica. In dubbio, chiedere.
+    message: >
+      Il repository non contiene publiccode.yml. Per software di titolarita' pubblica
+      questo file alimenta il catalogo del riuso previsto dall'art. 69 CAD.
+
+  - id: RIU-002
+    title: "publiccode.yml non valido secondo il parser ufficiale"
+    source: RIU-PUBLICCODE-PARSER
+    check: deterministic
+    severity: important
+    evidence: deterministic
+    when: "Lo script run_publiccode_parser.sh restituisce codice di uscita diverso da 0."
+    guard: >
+      Riportare integralmente l'output del parser. Non riformulare ne' interpretare
+      i suoi errori: sono gia' autorevoli.
+    message: "Il parser ufficiale segnala errori di validazione."
+
+  - id: RIU-003
+    title: "licenza dichiarata incoerente con i file di licenza presenti"
+    source: RIU-LG-SW
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      Il valore di legal.license non corrisponde all'identificativo SPDX desumibile
+      dal file LICENSE presente nel repository.
+    guard: >
+      Tenere conto delle licenze duali e delle eccezioni: se il repository dichiara
+      piu' licenze in modo esplicito, verificare prima che non sia un caso legittimo.
+    message: >
+      La licenza dichiarata in publiccode.yml differisce da quella dei file di
+      licenza presenti. Le Linee guida prescrivono la scelta fra licenze certificate
+      da Open Source Initiative.
+
+  - id: RIU-004
+    title: "conformita' alle misure minime dichiarata, credenziali in chiaro nel codice"
+    source: SEC-MISURE-MINIME
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      it.conforme.misureMinimeSicurezza vale yes e si rilevano credenziali, chiavi o
+      stringhe di connessione in chiaro nel codice applicativo.
+    guard: >
+      Escludere percorsi di test, fixture, esempi e documentazione. Escludere valori
+      manifestamente segnaposto. Citare sempre file:line.
+    message: >
+      Il progetto dichiara conformita' alle Misure minime di sicurezza ICT, ma il
+      codice contiene credenziali in chiaro.
+
+  - id: RIU-005
+    title: "conformita' GDPR dichiarata, dati personali in log"
+    source: RIU-PUBLICCODE-SCHEMA
+    check: coherence
+    severity: important
+    evidence: inferred
+    when: >
+      it.conforme.gdpr vale yes e si rilevano istruzioni di logging che emettono
+      codici fiscali, indirizzi email, identificativi utente o corpi di richiesta
+      non filtrati.
+    guard: >
+      Verificare che il valore loggato sia effettivamente un dato personale e non un
+      identificativo tecnico. Citare la riga del logger, non la definizione del campo.
+    message: >
+      Il progetto dichiara il rispetto del GDPR, ma emette dati personali nei log.
+
+  - id: RIU-006
+    title: "piattaforma abilitante dichiarata senza riscontro nel codice"
+    source: RIU-PUBLICCODE-SCHEMA
+    check: coherence
+    severity: nit
+    evidence: inferred
+    applies_to:
+      - it.piattaforme.spid
+      - it.piattaforme.cie
+      - it.piattaforme.anpr
+      - it.piattaforme.pagopa
+    when: >
+      La chiave vale yes e la ricerca nel repository non produce evidenze di
+      integrazione: dipendenze, endpoint, metadati, configurazioni, variabili
+      d'ambiente, manifest di deploy.
+    guard: >
+      Formulare come mancato riscontro, mai come smentita. Elencare esplicitamente
+      dove si e' cercato. Declassare a informativo se dependsOn o README indicano
+      componenti esterni al repository.
+    message: >
+      Il progetto dichiara l'integrazione con la piattaforma indicata, ma nel
+      repository non sono state riscontrate evidenze. Ricerca effettuata in: <elenco>.
+
+  - id: RIU-007
+    title: "interoperabilita' dichiarata senza specifica OpenAPI"
+    source: RIU-PUBLICCODE-SCHEMA
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      it.conforme.interoperabile vale yes e il repository non contiene alcuna
+      specifica OpenAPI.
+    guard: >
+      Verificare che il progetto esponga effettivamente API. Un applicativo senza
+      superficie di interoperabilita' non e' tenuto a esibirne una.
+    message: >
+      Il progetto dichiara conformita' alle linee guida sull'interoperabilita'
+      (rif. art. 73 CAD), ma non contiene una specifica OpenAPI verificabile.
+
+  - id: RIU-008
+    title: "interoperabilita' dichiarata, OpenAPI non supera il checker ufficiale"
+    source: INT-OAS-CHECKER
+    check: deterministic
+    severity: important
+    evidence: deterministic
+    when: >
+      it.conforme.interoperabile vale yes e l'esecuzione del checker con profilo
+      Italian Guidelines Full restituisce errori.
+    guard: >
+      Riportare il conteggio e gli identificativi delle regole violate cosi' come
+      prodotti dallo strumento.
+    message: >
+      Per la pubblicazione nel Catalogo API della PDND l'ente e' tenuto a ottenere
+      zero errori con il profilo Italian Guidelines Full.
+
+  - id: RIU-009
+    title: "stato di sviluppo dichiarato stable senza riscontri di rilascio"
+    source: RIU-PUBLICCODE-SCHEMA
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      developmentStatus vale stable e il repository non presenta tag di versione,
+      release o changelog.
+    guard: >
+      Non emettere se il versionamento e' gestito fuori dal repository e la cosa e'
+      documentata.
+    message: >
+      Lo stato dichiarato e' stable, ma non sono riscontrabili elementi di rilascio.
+
+  - id: RIU-010
+    title: "contatti di manutenzione assenti o scaduti"
+    source: RIU-PUBLICCODE-SCHEMA
+    check: structural
+    severity: nit
+    evidence: inferred
+    when: >
+      La sezione maintenance non riporta contatti, oppure le date di fine contratto
+      dichiarate sono anteriori alla data odierna.
+    guard: "Nessuna."
+    message: >
+      I riferimenti di manutenzione sono assenti o riferiti a un periodo concluso.
+      Il riuso da parte di altre amministrazioni presuppone un punto di contatto
+      raggiungibile.
+
+  - id: RIU-011
+    title: "documentazione dichiarata non presente nel repository"
+    source: RIU-CAD-68-69
+    check: coherence
+    severity: nit
+    evidence: inferred
+    when: >
+      Il repository non contiene documentazione tecnica oltre a un README minimo,
+      pur trattandosi di software soggetto all'obbligo di riuso.
+    guard: >
+      Se documentation punta a una sede esterna, non emettere il finding sulla base
+      dell'assenza locale: la raggiungibilita' dell'URL e' verificata altrove.
+    message: >
+      L'art. 69 comma 1 richiede che il codice sorgente sia reso disponibile
+      completo della documentazione.
+
+  - id: RIU-012
+    title: "versione dello standard publiccode.yml non supportata o superata"
+    source: RIU-PUBLICCODE-PARSER
+    check: deterministic
+    severity: nit
+    evidence: deterministic
+    when: >
+      Il valore di publiccodeYmlVersion non compare fra le versioni supportate dal
+      parser, oppure non e' "0" ne' una 0.7.x e il parser emette il relativo avviso.
+    guard: >
+      Non e' un difetto del codice ma della metadatazione: mantenere severita' nit.
+      Un repository che dichiara una versione precedente resta valido: le regole di
+      coerenza vanno applicate comunque, risolvendo i nomi delle chiavi secondo la
+      versione dichiarata. Non declassare ne' saltare gli altri controlli.
+    message: >
+      La versione dello standard dichiarata non e' l'ultima disponibile. Il parser
+      ufficiale raccomanda il valore "0", interpretato sempre come versione corrente.

@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Controllo settimanale di freschezza: fa fallire la build quando la baseline
+    # normativa invecchia oltre la soglia o una scadenza di revisione e' superata.
+    - cron: "0 6 * * 1"
+
+jobs:
+  provenance:
+    name: Gate di provenienza
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Verifica registro fonti e regole
+        run: python scripts/check_sources.py --sources sources.yml --rules rules/
+
+  urls:
+    name: Raggiungibilita' delle fonti
+    runs-on: ubuntu-latest
+    continue-on-error: true   # una fonte irraggiungibile e' un avviso, non un blocco
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python scripts/check_sources.py --sources sources.yml --check-urls
+
+  publiccode:
+    name: Validazione publiccode.yml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: italia/publiccode-parser-action@v1
+        with:
+          publiccode: "publiccode.yml"

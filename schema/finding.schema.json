@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/engineering87/pa-reviewer/schema/finding.schema.json",
+  "title": "Finding",
+  "description": "Rilievo prodotto dalla skill pa-reviewer. Ogni finding e' riconducibile a una fonte pubblica e a una posizione nel codice.",
+  "type": "object",
+  "required": ["id", "rule", "source", "module", "severity", "evidence", "location", "message"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identificativo stabile del rilievo, per la tracciabilita' fra revisioni successive.",
+      "pattern": "^[A-Z]{3}-[0-9]{3}-[0-9a-f]{8}$"
+    },
+    "rule": { "type": "string", "description": "Identificativo della regola in rules/." },
+    "source": { "type": "string", "description": "Identificativo della fonte in sources.yml." },
+    "source_citation": {
+      "type": "string",
+      "description": "Citazione per esteso: documento, atto, data. Obbligatoria nel testo del report."
+    },
+    "module": {
+      "type": "string",
+      "enum": ["riuso", "design-system", "accessibilita", "interoperabilita", "sicurezza", "dati-aperti", "ia"]
+    },
+    "module_maturity": { "type": "string", "enum": ["stable", "beta"] },
+    "severity": { "type": "string", "enum": ["important", "nit", "pre_existing"] },
+    "evidence": {
+      "type": "string",
+      "enum": ["deterministic", "inferred", "not_verifiable"],
+      "description": "deterministic: output di uno strumento ufficiale. inferred: dedotto dal codice con citazione. not_verifiable: adempimento non dimostrabile dal codice, non e' un finding e va nella sezione promemoria."
+    },
+    "tool": { "type": "string", "description": "Strumento che ha prodotto il rilievo, se evidence e' deterministic." },
+    "location": {
+      "type": "object",
+      "required": ["file"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 1 },
+        "declared_key": { "type": "string", "description": "Chiave dichiarata a cui il rilievo si riferisce, es. it.piattaforme.spid." }
+      }
+    },
+    "searched_in": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Obbligatorio per i rilievi di mancato riscontro: dove si e' cercato prima di concludere."
+    },
+    "message": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["open", "fixed", "accepted_risk", "not_applicable"],
+      "default": "open",
+      "description": "Gestito nel registro delle decisioni, non dalla singola revisione."
+    },
+    "decision_note": { "type": "string", "description": "Motivazione, obbligatoria per accepted_risk e not_applicable." }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "evidence": { "const": "inferred" } } },
+      "then": { "required": ["source_citation"], "properties": { "location": { "required": ["file", "line"] } } }
+    },
+    {
+      "if": { "properties": { "evidence": { "const": "deterministic" } } },
+      "then": { "required": ["tool"] }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["accepted_risk", "not_applicable"] } } },
+      "then": { "required": ["decision_note"] }
+    }
+  ]
+}

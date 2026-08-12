@@ -1,0 +1,451 @@
+# Registro delle fonti normative e tecniche
+#
+# UNICA fonte di verita' del progetto per i riferimenti normativi.
+# NORMATIVE_BASELINE.md e' generato da questo file; non modificare la tabella a mano.
+#
+# Regola di ammissione: una fonte entra in questo registro solo se e' pubblicamente
+# accessibile a un terzo senza credenziali, senza rapporti contrattuali e senza
+# conoscenza interna di alcuna organizzazione.
+#
+# Livelli di verifica:
+#   verified   - documento o pagina primaria consultata direttamente; l'affermazione
+#                associata e' attestata da quella pagina
+#   cited      - riferimento riportato da una fonte secondaria attendibile; la fonte
+#                primaria non e' stata ancora consultata
+#   unverified - segnaposto di perimetro; nessun controllo attivo puo' basarsi su di esso
+
+schema_version: "0.1.0"
+baseline_date: "2026-08-12"
+maintainer_note: >
+  Le date "retrieved" indicano l'ultima verifica effettiva della fonte, non la data
+  di pubblicazione del documento. Una fonte con retrieved piu' vecchio di 180 giorni
+  viene segnalata dal controllo di freschezza in CI.
+
+domains:
+
+  # ---------------------------------------------------------------- accessibilita'
+  - id: ACC
+    name: Accessibilita'
+    module: accessibilita
+    maturity: stub
+    sources:
+      - id: ACC-LG-EAA
+        document: "Linee Guida sull'accessibilita' dei servizi in attuazione dell'articolo 21 del d.lgs. 82/2022"
+        issuer: AgID
+        act: "Determinazione n. 38/2026"
+        act_date: "2026-03-04"
+        status: in_vigore
+        url: "https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Attua la Direttiva UE 2019/882 (European Accessibility Act). Contiene schede
+          di controllo differenziate per siti web, documenti non web e app mobili, e un
+          allegato sulle informazioni relative ai servizi che soddisfano i requisiti.
+          Da verificare sul PDF il numero esatto e la struttura delle schede prima di
+          derivarne regole.
+
+      - id: ACC-EN301549
+        document: "EN 301 549 v3.2.1 (2021-03) - Requisiti di accessibilita' per prodotti e servizi ICT"
+        issuer: CEN/CENELEC/ETSI
+        act: "UNI CEI EN 301549:2021"
+        act_date: "2021-03-01"
+        status: in_vigore
+        url: "https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
+        verification: cited
+        retrieved: "2026-08-12"
+        review_by: "2026-11-30"
+        notes: >
+          Norma armonizzata di riferimento richiamata da ACC-LG-EAA. Fonti secondarie
+          indicano un aggiornamento atteso a luglio 2026 con enforcement europeo entro
+          novembre 2026, che sposterebbe il riferimento web alle WCAG 2.2 AA.
+          NON e' stato verificato se l'aggiornamento sia avvenuto: verificare prima di
+          rilasciare il modulo accessibilita' come stable.
+
+      - id: ACC-WCAG21
+        document: "Web Content Accessibility Guidelines 2.1, livello AA"
+        issuer: W3C
+        act: "W3C Recommendation"
+        act_date: "2018-06-05"
+        status: in_vigore
+        url: "https://www.w3.org/TR/WCAG21/"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Soglia minima obbligatoria secondo ACC-LG-EAA. WCAG 2.2 raccomandate ma non
+          obbligatorie fino all'aggiornamento della norma armonizzata.
+
+      - id: ACC-L4-2004
+        document: "Legge 9 gennaio 2004, n. 4 (Legge Stanca)"
+        issuer: Parlamento italiano
+        act: "L. 4/2004"
+        act_date: "2004-01-09"
+        status: in_vigore
+        url: "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4"
+        verification: unverified
+        retrieved: "2026-08-12"
+        notes: >
+          Regime parallelo all'EAA per la PA. Comporta obblighi documentali (dichiarazione
+          di accessibilita' e obiettivi annuali via Form AgID) NON verificabili in code
+          review: rientrano nel perimetro dei promemoria di adempimento, mai nei finding.
+          URL da confermare.
+
+  # ---------------------------------------------------------------- design system
+  - id: DES
+    name: Design system e interfacce
+    module: design-system
+    maturity: stub
+    sources:
+      - id: DES-LG-DESIGN
+        document: "Linee guida di design per i siti internet e i servizi digitali della Pubblica Amministrazione"
+        issuer: AgID / Dipartimento per la trasformazione digitale
+        act: null
+        act_date: null
+        status: in_vigore
+        url: "https://docs.italia.it/italia/designers-italia/design-linee-guida-docs/it/stabile/"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Estremo obbligatorio del dominio. Reperire gli estremi esatti della
+          determinazione di adozione e della versione vigente prima di derivare regole.
+
+      - id: DES-MANUALE
+        document: "Manuale operativo di design"
+        issuer: Designers Italia
+        act: null
+        act_date: null
+        status: in_vigore
+        url: "https://docs.italia.it/italia/designers-italia/manuale-operativo-design-docs/it/versione-corrente/doc/sviluppo-dell-interfaccia/sviluppare-con-il-design-system-italia.html"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Documento operativo a supporto delle linee guida. Attesta che Bootstrap Italia
+          e' la risorsa di sviluppo principale del design system .italia e che ne derivano
+          due kit basati su React (dalla versione 18 in poi) e Angular.
+
+      - id: DES-BI-DOCS
+        document: "Bootstrap Italia - documentazione"
+        issuer: Designers Italia / Developers Italia
+        act: null
+        act_date: null
+        version: "2.18.3"
+        status: in_vigore
+        url: "https://italia.github.io/bootstrap-italia/"
+        repository: "https://github.com/italia/bootstrap-italia"
+        package: "https://www.npmjs.com/package/bootstrap-italia"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Tema basato su Bootstrap 5.2.3. Le versioni 1.6.4 e precedenti sono deprecate.
+          DISALLINEAMENTO RILEVATO: la pagina "Informazioni" della documentazione indica
+          2.18.2 mentre npm riporta 2.18.3. Le regole che dipendono dalla versione devono
+          usare npm come riferimento e tollerare lo scarto minore.
+
+  # ---------------------------------------------------------------- interoperabilita'
+  - id: INT
+    name: Interoperabilita' e API
+    module: interoperabilita
+    maturity: stub
+    sources:
+      - id: INT-MODI
+        document: "Linee guida del modello di interoperabilita' per la Pubblica Amministrazione (ModI)"
+        issuer: AgID
+        act: "adottate ai sensi dell'art. 71 CAD"
+        act_date: null
+        status: in_vigore
+        url: "https://github.com/italia/api-oas-checker-rules"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Estremi della determinazione di adozione e versione vigente da reperire.
+          Riferimento normativo di secondo livello: art. 73 CAD.
+
+      - id: INT-OAS-CHECKER
+        document: "api-oas-checker-rules - regole Spectral per la verifica delle API secondo il ModI"
+        issuer: Dipartimento per la trasformazione digitale
+        license: AGPL
+        status: in_vigore
+        url: "https://github.com/italia/api-oas-checker-rules"
+        tool_url: "https://github.com/italia/api-oas-checker"
+        verification: verified
+        retrieved: "2026-08-12"
+        delegation: true
+        notes: >
+          STRUMENTO DETERMINISTICO UFFICIALE. La skill lo invoca, non lo replica.
+          Per la pubblicazione di una OpenAPI nel Catalogo API della PDND l'Ente e' tenuto
+          a eseguire il checker con il profilo "Italian Guidelines Full" ottenendo 0 errori.
+          Profili disponibili: Italian Guidelines Full, Best Practices Only,
+          Extra Security Checks. Disponibile anche come GitHub Action che scarica sempre
+          l'ultimo ruleset pubblicato.
+          Il progetto dichiara esplicitamente di non essere uno strumento di certificazione:
+          la piena conformita' al ModI richiede considerazioni non validabili automaticamente.
+          Questo e' lo spazio residuo in cui opera la skill.
+
+  # ---------------------------------------------------------------- riuso
+  - id: RIU
+    name: Riuso e rilascio open source
+    module: riuso
+    maturity: beta
+    sources:
+      - id: RIU-CAD-68-69
+        document: "Codice dell'Amministrazione Digitale, articoli 68 e 69"
+        issuer: Parlamento italiano
+        act: "D.Lgs. 7 marzo 2005, n. 82"
+        act_date: "2005-03-07"
+        status: in_vigore
+        url: "https://docs.italia.it/italia/developers-italia/lg-acquisizione-e-riuso-software-per-pa-docs/it/stabile/premessa/titolarita.html"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Art. 69 comma 1: le PA titolari di soluzioni e programmi informatici realizzati
+          su specifiche indicazioni del committente pubblico hanno l'obbligo di rendere
+          disponibile il codice sorgente, completo della documentazione e rilasciato in
+          repertorio pubblico sotto licenza aperta.
+
+      - id: RIU-LG-SW
+        document: "Linee guida su acquisizione e riuso di software per le pubbliche amministrazioni"
+        issuer: AgID
+        act: "in attuazione degli artt. 68 e 69 CAD"
+        act_date: null
+        status: in_vigore
+        url: "https://docs.italia.it/italia/developers-italia/lg-acquisizione-e-riuso-software-per-pa-docs/it/stabile/"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Il par. 3.5.3 definisce l'albero decisionale per la scelta della licenza aperta;
+          la licenza va scelta tra quelle certificate da Open Source Initiative. Gli allegati
+          A, B e D adottano la convenzione MUST/SHOULD e sono pensati per essere allegati a
+          un capitolato tecnico. Estremi della determinazione di adozione da reperire.
+
+      - id: RIU-PUBLICCODE-SCHEMA
+        document: "Lo Standard publiccode.yml - schema e estensioni nazionali"
+        issuer: Developers Italia
+        status: in_vigore
+        url: "https://docs.italia.it/italia/developers-italia/publiccodeyml/it/master/schema.it.html"
+        url_country_extension: "https://docs.italia.it/italia/developers-italia/publiccodeyml/it/master/country.html"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          L'estensione nazionale italiana espone chiavi autodichiarate: conformita' alle
+          linee guida sull'interoperabilita' (rif. art. 73 CAD), conformita' alle Misure
+          minime di sicurezza ICT, rispetto del GDPR, interfacciamento con SPID, CIE, ANPR
+          e pagoPA, oltre al codice IPA dell'amministrazione.
+          NUCLEO DEL PROGETTO: queste chiavi sono AUTODICHIARAZIONI. Il parser ufficiale
+          ne verifica la forma, non la verita'. La verifica della loro corrispondenza al
+          codice e' il primo modulo stable della skill.
+
+      - id: RIU-PUBLICCODE-PARSER
+        document: "publiccode-parser-go - parser e validatore"
+        issuer: Developers Italia
+        status: in_vigore
+        url: "https://github.com/italia/publiccode-parser-go"
+        action_url: "https://github.com/italia/publiccode-parser-action"
+        action_license: "EUPL-1.2"
+        verification: verified
+        retrieved: "2026-08-12"
+        delegation: true
+        supported_versions: ["0", "0.2", "0.2.0", "0.2.1", "0.2.2", "0.3", "0.3.0",
+                             "0.4", "0.4.0", "0.5", "0.5.0", "0.7", "0.7.0"]
+        notes: >
+          STRUMENTO DETERMINISTICO UFFICIALE. Esegue validazione sintattica e semantica
+          secondo la specifica ufficiale, con supporto per l'estensione italiana.
+          Disponibile come binario, immagine Docker, GitHub Action, snippet GitLab CI e
+          orb CircleCI. La skill lo invoca e ne cita l'output; non lo replica.
+          Le versioni dello standard accettate sono quelle elencate in supported_versions,
+          rilevate direttamente dal sorgente del parser. Il parser emette un avviso per
+          ogni valore diverso da "0" o "0.7.x", raccomandando "0", che viene interpretato
+          come l'ultima versione disponibile. Il modulo riuso deve quindi accettare
+          repository che dichiarano qualunque versione dell'elenco, non solo l'ultima.
+
+  # ---------------------------------------------------------------- sicurezza
+  - id: SEC
+    name: Sicurezza dello sviluppo
+    module: sicurezza
+    maturity: stub
+    sources:
+      - id: SEC-LG-SVILUPPO
+        document: "Linee guida per lo sviluppo del software sicuro nella pubblica amministrazione"
+        issuer: AgID
+        act: null
+        act_date: null
+        status: in_vigore
+        url: "https://www.agid.gov.it/it/sicurezza/cert-pa/linee-guida-sviluppo-del-software-sicuro"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Si inseriscono nel contesto delle linee guida per la sicurezza ICT delle PA.
+          Comprendono l'allegato "Linee Guida per l'adozione di un ciclo di sviluppo di
+          software sicuro". Estremi della determinazione di adozione da reperire.
+
+      - id: SEC-MISURE-MINIME
+        document: "Misure minime di sicurezza ICT per le pubbliche amministrazioni"
+        issuer: AgID
+        act: null
+        act_date: null
+        status: in_vigore
+        url: "https://cert-agid.gov.it/documenti-agid/"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Richiamate come autodichiarazione nell'estensione nazionale di publiccode.yml
+          (chiave misureMinimeSicurezza), quindi rilevanti per il modulo riuso.
+
+      - id: SEC-TLS
+        document: "Raccomandazioni AgID in merito allo standard Transport Layer Security (TLS)"
+        issuer: AgID
+        act: "Determinazione n. 471 del 5 novembre 2020"
+        act_date: "2020-11-05"
+        status: in_vigore
+        url: "https://www.agid.gov.it/"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Estremi rilevati da un documento AgID secondario. URL primario da reperire.
+          Verificabile su codice: versioni TLS e cipher suite nelle configurazioni.
+
+  # ---------------------------------------------------------------- dati aperti
+  - id: DAT
+    name: Dati aperti e metadatazione
+    module: dati-aperti
+    maturity: stub
+    sources:
+      - id: DAT-DLGS36
+        document: "D.Lgs. 24 gennaio 2006, n. 36 - apertura dei dati e riutilizzo dell'informazione del settore pubblico"
+        issuer: Parlamento italiano
+        act: "D.Lgs. 36/2006"
+        act_date: "2006-01-24"
+        status: in_vigore
+        url: "https://www.dati.gov.it/linee-guida-valorizzazione-patrimonio-informativo-pubblico"
+        verification: cited
+        retrieved: "2026-08-12"
+
+      - id: DAT-LG-PATRIMONIO
+        document: "Linee Guida Nazionali per la Valorizzazione del Patrimonio Informativo Pubblico"
+        issuer: AgID
+        act: null
+        act_date: null
+        status: da_verificare
+        url: "https://www.dati.gov.it/linee-guida-valorizzazione-patrimonio-informativo-pubblico"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Introducono il profilo nazionale dei metadati DCAT-AP_IT e raccomandano CC-BY
+          come licenza di riferimento per i dati della PA. La pagina elenca piu' versioni
+          (2016, 2017): identificare la versione vigente prima di derivare regole.
+          Esiste inoltre un documento distinto "Linee Guida Open Data" recante regole
+          tecniche per l'attuazione del D.Lgs. 36/2006, il cui stato di adozione va
+          verificato: una fonte lo indica disponibile nella versione della consultazione.
+
+      - id: DAT-DCAT-AP-IT
+        document: "Profilo di metadatazione DCAT-AP_IT e Linee guida per i cataloghi dati"
+        issuer: AgID
+        version: "1.0"
+        status: in_vigore
+        url: "https://docs.italia.it/italia/daf/linee-guida-cataloghi-dati-dcat-ap-it/it/stabile/dcat-ap_it.html"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Profilo nazionale conforme a DCAT-AP europeo. Per ciascun elemento sono forniti
+          esempi in JSON-LD, RDF/XML e RDF/Turtle: verificabile su codice che espone cataloghi.
+
+  # ---------------------------------------------------------------- intelligenza artificiale
+  - id: IA
+    name: Intelligenza artificiale nella PA
+    module: ia
+    maturity: stub
+    sources:
+      - id: IA-LG-ADOZIONE
+        document: "Linee Guida per l'adozione dell'Intelligenza Artificiale nella Pubblica Amministrazione"
+        issuer: AgID
+        act: "Determinazione n. 17/2025"
+        act_date: "2025-02-17"
+        status: iter_in_corso
+        url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        verification: cited
+        retrieved: "2026-08-12"
+        review_by: "2026-09-30"
+        notes: >
+          Consultazione pubblica 18 febbraio - 20 marzo 2025. Fonti consultate (aggiornate
+          ad aprile/maggio 2026) indicavano l'iter di adozione ancora in corso.
+          STATO AD AGOSTO 2026 NON VERIFICATO.
+
+      - id: IA-LG-SVILUPPO
+        document: "Linee Guida per lo sviluppo di sistemi di Intelligenza Artificiale nella pubblica amministrazione"
+        issuer: AgID
+        act: "Determinazione n. 43 del 10 marzo 2026"
+        act_date: "2026-03-10"
+        status: iter_in_corso
+        url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        verification: cited
+        retrieved: "2026-08-12"
+        review_by: "2026-09-30"
+        notes: >
+          Bozza adottata e posta in consultazione pubblica dal 12 marzo all'11 aprile 2026,
+          poi pareri di Conferenza Unificata e Garante Privacy. Previste dal Piano Triennale
+          2024-2026 (CAP5.16). STATO AD AGOSTO 2026 NON VERIFICATO.
+          Nessuna regola operativa puo' derivare da questa fonte finche' lo stato non e'
+          confermato: il modulo resta stub.
+
+      - id: IA-LG-PROCUREMENT
+        document: "Linee Guida per il procurement di IA nella Pubblica Amministrazione"
+        issuer: AgID
+        act: "Determinazione n. 43 del 10 marzo 2026"
+        act_date: "2026-03-10"
+        status: iter_in_corso
+        url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        verification: cited
+        retrieved: "2026-08-12"
+        review_by: "2026-09-30"
+        notes: >
+          Prevista dal Piano Triennale 2024-2026 (CAP5.15). FUORI PERIMETRO della skill:
+          riguarda procedure di acquisizione, non codice. Registrata per completezza
+          della mappa, senza modulo associato.
+
+      - id: IA-L132-2025
+        document: "Legge 132/2025, articolo 20"
+        issuer: Parlamento italiano
+        act: "L. 132/2025"
+        act_date: null
+        status: in_vigore
+        url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        verification: cited
+        retrieved: "2026-08-12"
+        notes: >
+          Designa AgID e ACN quali autorita' nazionali responsabili dell'attuazione della
+          normativa italiana ed europea in materia di IA. Estremi completi da reperire.
+
+  # ---------------------------------------------------------------- quadro di programmazione
+  - id: PT
+    name: Quadro di programmazione
+    module: null
+    maturity: reference_only
+    sources:
+      - id: PT-PIANO-TRIENNALE
+        document: "Piano triennale per l'informatica nella Pubblica Amministrazione 2024-2026"
+        issuer: AgID / Dipartimento per la trasformazione digitale
+        act: "DPCM 12 gennaio 2024"
+        act_date: "2024-01-12"
+        status: in_vigore
+        url: "https://docs.italia.it/italia/piano-triennale-ict/pianotriennale-ict-doc/it/2024-2026-agg-2025/"
+        verification: verified
+        retrieved: "2026-08-12"
+        notes: >
+          Non genera regole. Serve a datare le scadenze attese e a prevedere l'arrivo di
+          nuove linee guida, quindi a pianificare la manutenzione della baseline.
+
+# ---------------------------------------------------------------- perimetro negativo
+# Domini deliberatamente esclusi. Un finding non puo' mai essere emesso su questi temi;
+# al massimo compare come promemoria di adempimento in coda al report.
+out_of_scope:
+  - id: OOS-PROCUREMENT
+    reason: "Procedure di gara e valutazione comparativa ex art. 68 CAD: non ancorabili a file:line"
+  - id: OOS-DPIA
+    reason: "Valutazione d'impatto sulla protezione dei dati: adempimento organizzativo"
+  - id: OOS-CONSERVAZIONE
+    reason: "Processi di conservazione documentale: organizzativi, non di codice"
+  - id: OOS-CLOUD-QUAL
+    reason: "Qualificazione dei servizi cloud: procedura amministrativa presso ACN"
+  - id: OOS-ATTESTAZIONI
+    reason: >
+      Attestazioni e dichiarazioni di accessibilita' sottoscritte digitalmente: la skill
+      non puo' produrle ne' sostituirle, e non emette mai giudizi di conformita'
