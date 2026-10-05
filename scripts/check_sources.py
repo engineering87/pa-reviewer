@@ -136,9 +136,11 @@ def check_rules(
             report.error(f"{rules_file}: campo 'module' mancante")
         elif maturity is None:
             report.error(f"{rules_file}: modulo '{module}' assente da sources.yml")
-        elif document.get("maturity") != maturity:
+        elif "maturity" in document and document["maturity"] != maturity:
+            # Il campo e' facoltativo nel file delle regole: se c'e', deve
+            # coincidere con la maturita' dichiarata in sources.yml.
             report.error(
-                f"{rules_file}: maturity '{document.get('maturity')}' diversa da "
+                f"{rules_file}: maturity '{document['maturity']}' diversa da "
                 f"quella dichiarata in sources.yml ('{maturity}')"
             )
 
