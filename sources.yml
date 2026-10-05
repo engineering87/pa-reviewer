@@ -368,13 +368,15 @@ domains:
         act_date: "2025-02-17"
         status: iter_in_corso
         url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        document_url: "https://www.agid.gov.it/sites/agid/files/2025-02/Linee_Guida_adozione_IA_nella_PA.pdf"
         verification: cited
-        retrieved: "2026-08-12"
-        review_by: "2026-09-30"
+        retrieved: "2026-10-05"
+        review_by: "2026-12-31"
         notes: >
-          Consultazione pubblica 18 febbraio - 20 marzo 2025. Fonti consultate (aggiornate
-          ad aprile/maggio 2026) indicavano l'iter di adozione ancora in corso.
-          STATO AD AGOSTO 2026 NON VERIFICATO.
+          Consultazione pubblica 18 febbraio - 20 marzo 2025. Revisione del 2026-10-05:
+          la pagina istituzionale AgID riporta ancora "Iter di adozione in corso" e
+          pubblica solo la bozza del febbraio 2025; nessuna notizia di adozione definitiva
+          trovata. Lo stato resta iter_in_corso.
 
       - id: IA-LG-SVILUPPO
         document: "Linee Guida per lo sviluppo di sistemi di Intelligenza Artificiale nella pubblica amministrazione"
@@ -383,13 +385,16 @@ domains:
         act_date: "2026-03-10"
         status: iter_in_corso
         url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        document_url: "https://www.agid.gov.it/sites/agid/files/2026-03/LLGG_Sviluppo_per%20consultazione%20pubblica.pdf"
         verification: cited
-        retrieved: "2026-08-12"
-        review_by: "2026-09-30"
+        retrieved: "2026-10-05"
+        review_by: "2026-12-31"
         notes: >
           Bozza adottata e posta in consultazione pubblica dal 12 marzo all'11 aprile 2026,
           poi pareri di Conferenza Unificata e Garante Privacy. Previste dal Piano Triennale
-          2024-2026 (CAP5.16). STATO AD AGOSTO 2026 NON VERIFICATO.
+          2024-2026 (CAP5.16). Revisione del 2026-10-05: la pagina istituzionale AgID
+          pubblica ancora solo la versione per consultazione pubblica; nessuna notizia di
+          adozione definitiva trovata. Lo stato resta iter_in_corso.
           Nessuna regola operativa puo' derivare da questa fonte finche' lo stato non e'
           confermato: il modulo resta stub.
 
@@ -400,11 +405,14 @@ domains:
         act_date: "2026-03-10"
         status: iter_in_corso
         url: "https://www.agid.gov.it/it/ambiti-intervento/intelligenza-artificiale"
+        document_url: "https://www.agid.gov.it/sites/agid/files/2026-03/LLGG%20procurement_per%20consultazione%20pubblica.pdf"
         verification: cited
-        retrieved: "2026-08-12"
-        review_by: "2026-09-30"
+        retrieved: "2026-10-05"
+        review_by: "2026-12-31"
         notes: >
-          Prevista dal Piano Triennale 2024-2026 (CAP5.15). FUORI PERIMETRO della skill:
+          Prevista dal Piano Triennale 2024-2026 (CAP5.15). Revisione del 2026-10-05: la
+          pagina istituzionale AgID pubblica ancora solo la versione per consultazione
+          pubblica; nessuna notizia di adozione definitiva trovata. FUORI PERIMETRO della skill:
           riguarda procedure di acquisizione, non codice. Registrata per completezza
           della mappa, senza modulo associato.
 

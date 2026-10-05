@@ -61,16 +61,16 @@ report.
 Uno stub silenzioso è vietato. Il perimetro dichiarato può essere completo anche quando
 l'implementazione non lo è, purché la differenza sia visibile a chi legge il report.
 
-Stato al 2026-08-12:
+Stato al 2026-10-05:
 
 | Modulo | Maturità |
 | --- | --- |
 | `riuso` | beta |
-| `accessibilita` | stub |
-| `design-system` | stub |
-| `interoperabilita` | stub |
-| `sicurezza` | stub |
-| `dati-aperti` | stub |
+| `accessibilita` | beta |
+| `design-system` | beta |
+| `interoperabilita` | beta |
+| `sicurezza` | beta |
+| `dati-aperti` | beta |
 | `ia` | stub |
 
 ---
@@ -142,8 +142,9 @@ le API, che si definisce esplicitamente non uno strumento di certificazione.
 - **Trimestrale:** rilettura delle fonti con `retrieved` più vecchio di 180 giorni.
 - **Su evento:** pubblicazione di una nuova determinazione AgID nei domini mappati.
 - **Scadenze note:** le fonti con `review_by` valorizzato vanno ricontrollate entro quella
-  data. Al 2026-08-12 riguardano l'aggiornamento atteso della norma armonizzata
-  EN 301 549 e lo stato di adozione delle linee guida AgID sull'intelligenza artificiale.
+  data. Al 2026-10-05 riguardano l'aggiornamento atteso della norma armonizzata
+  EN 301 549 (entro il 2026-11-30) e lo stato di adozione delle linee guida AgID
+  sull'intelligenza artificiale (entro il 2026-12-31, dopo la revisione del 2026-10-05).
 
 Ogni aggiornamento della baseline produce una voce nel `CHANGELOG.md` che cita la
 determinazione o la versione che lo ha motivato. La cronologia di manutenzione è parte
@@ -159,8 +160,8 @@ punti la cui risoluzione dipende da eventi esterni al progetto.
 | Questione | Effetto | Scadenza |
 | --- | --- | --- |
 | La documentazione di Bootstrap Italia indica la versione 2.18.2, npm pubblica la 2.18.3 | Le regole che dipendono dalla versione usano npm come riferimento e tollerano lo scarto minore | nessuna |
-| Aggiornamento atteso della norma armonizzata EN 301 549, con possibile passaggio del riferimento web alle WCAG 2.2 AA | Il modulo `accessibilita` non puo' passare a beta prima della verifica | 2026-11-30 |
-| Le linee guida AgID sull'intelligenza artificiale risultano in iter di adozione alle date di verifica registrate | Il modulo `ia` resta stub, nessuna regola puo' derivarne | 2026-09-30 |
+| Aggiornamento atteso della norma armonizzata EN 301 549, con possibile passaggio del riferimento web alle WCAG 2.2 AA | Il modulo `accessibilita` non puo' passare a stable prima della verifica | 2026-11-30 |
+| Le linee guida AgID sull'intelligenza artificiale risultano in iter di adozione alle date di verifica registrate (ultima revisione 2026-10-05: adozione ancora in iter, sviluppo e procurement ancora in versione per consultazione pubblica) | Il modulo `ia` resta stub, nessuna regola puo' derivarne | 2026-12-31 |
 | Estremi delle determinazioni di adozione non ancora reperiti per alcune fonti (linee guida di design, ModI, sviluppo del software sicuro, raccomandazioni TLS) | Quelle fonti restano `cited`, quindi non possono fondare moduli `stable` | nessuna |
 
 Le scadenze sono registrate nel campo `review_by` delle rispettive fonti e vengono fatte
